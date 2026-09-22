@@ -20,13 +20,13 @@ CACHE = Path("data/cache/lfw")
 parser = argparse.ArgumentParser()
 parser.add_argument("models", nargs="+")
 parser.add_argument("--boot", type=int, default=200)
+parser.add_argument("--out-name", default="compare")
 parser.add_argument("--dev-impostors", type=int, default=1_000_000)
 parser.add_argument(
     "--drop-label-errors", action="store_true", help="sensitivity check: remove LFW_LABEL_ERRORS"
 )
 args = parser.parse_args()
 suffix = "_clean" if args.drop_label_errors else ""
-rng = np.random.default_rng(0)
 
 
 def interval(v):
@@ -55,6 +55,8 @@ for name in args.models:
     dev = side_scores(data["embeddings"], index, split["dev"])
     test = side_scores(data["embeddings"], index, split["test"])
 
+    # one generator per model, so a model's dev sample does not depend on which ran before it
+    rng = np.random.default_rng(0)
     sample = rng.choice(len(dev.impostor), args.dev_impostors, replace=False)
     fit_s = np.concatenate([dev.genuine, dev.impostor[sample]])
     fit_y = np.concatenate([np.ones(len(dev.genuine), bool), np.zeros(len(sample), bool)])
@@ -117,7 +119,7 @@ for name in args.models:
         {k: (v["cllr"]["point"], v["ece"]["point"]) for k, v in row["calibrators"].items()},
     )
 
-out = Path(f"outputs/calibration/compare{suffix}.json")
+out = Path(f"outputs/calibration/{args.out_name}{suffix}.json")
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(result, indent=2) + "\n")
 print(f"saved {out}")

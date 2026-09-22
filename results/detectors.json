@@ -317,47 +317,47 @@
       "timed_model": "scrfd_500m_kps_320",
       "latency": {
         "mac-m4pro_best": {
-          "p50_ms": 0.766,
-          "p95_ms": 0.782,
-          "setting": "ort-coreml:all:fp16",
+          "p50_ms": 0.695,
+          "p95_ms": 0.722,
+          "setting": "ort-coreml:ane:fp16",
           "session_p50_ms": [
-            0.731,
-            0.769,
-            0.766
+            0.709,
+            0.694,
+            0.695
           ]
         },
         "mac-m4pro_cpu": {
-          "p50_ms": 1.546,
-          "p95_ms": 1.848,
+          "p50_ms": 1.564,
+          "p95_ms": 1.865,
           "setting": "ort-cpu:cpu:fp32",
           "session_p50_ms": [
-            1.526,
-            1.546,
-            1.556
+            1.479,
+            1.564,
+            1.594
           ]
         },
         "rtx5060ti_cuda": {
-          "p50_ms": 2.817,
-          "p95_ms": 8.988,
+          "p50_ms": 2.957,
+          "p95_ms": 6.142,
           "setting": "ort-cuda:cuda:fp16",
           "session_p50_ms": [
-            3.023,
-            1.973,
-            3.093,
-            2.817,
-            1.995
+            2.056,
+            2.957,
+            3.392,
+            2.993,
+            1.957
           ]
         },
         "rtx5060ti_cpu": {
-          "p50_ms": 1.944,
-          "p95_ms": 2.26,
+          "p50_ms": 1.945,
+          "p95_ms": 2.208,
           "setting": "ort-cpu:cpu:fp32",
           "session_p50_ms": [
-            1.825,
-            1.944,
-            1.893,
-            2.106,
-            2.187
+            1.963,
+            1.991,
+            1.824,
+            1.911,
+            1.945
           ]
         }
       }
@@ -509,47 +509,47 @@
       "timed_model": "scrfd_10g_kps_320",
       "latency": {
         "mac-m4pro_best": {
-          "p50_ms": 1.265,
-          "p95_ms": 1.467,
-          "setting": "ort-coreml:all:fp16",
+          "p50_ms": 1.61,
+          "p95_ms": 1.69,
+          "setting": "ort-coreml:ane:fp16",
           "session_p50_ms": [
-            1.267,
-            1.237,
-            1.265
+            1.613,
+            1.61,
+            1.606
           ]
         },
         "mac-m4pro_cpu": {
-          "p50_ms": 7.172,
-          "p95_ms": 7.331,
+          "p50_ms": 7.231,
+          "p95_ms": 9.796,
           "setting": "ort-cpu:cpu:fp32",
           "session_p50_ms": [
-            7.199,
-            7.172,
-            7.134
+            7.228,
+            7.231,
+            7.264
           ]
         },
         "rtx5060ti_cuda": {
-          "p50_ms": 4.314,
-          "p95_ms": 11.852,
-          "setting": "ort-cuda:cuda:fp32",
+          "p50_ms": 3.345,
+          "p95_ms": 6.592,
+          "setting": "ort-cuda:cuda:fp16",
           "session_p50_ms": [
-            4.342,
-            4.331,
-            4.314,
-            4.142,
-            4.179
+            3.345,
+            3.246,
+            3.235,
+            3.575,
+            4.518
           ]
         },
         "rtx5060ti_cpu": {
-          "p50_ms": 10.12,
-          "p95_ms": 10.907,
+          "p50_ms": 9.997,
+          "p95_ms": 10.728,
           "setting": "ort-cpu:cpu:fp32",
           "session_p50_ms": [
-            10.313,
-            10.12,
-            10.06,
-            10.225,
-            10.079
+            10.315,
+            9.997,
+            9.983,
+            9.833,
+            10.064
           ]
         }
       }
