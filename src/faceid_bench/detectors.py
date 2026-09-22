@@ -56,6 +56,8 @@ class SCRFD:
     ):
         import onnxruntime as ort
 
+        if "CUDAExecutionProvider" in providers and hasattr(ort, "preload_dlls"):
+            ort.preload_dlls()
         self.name = Path(path).stem
         self.size, self.score, self.nms = size, score, nms
         self.session = ort.InferenceSession(str(MODELS / path), providers=list(providers))
@@ -131,7 +133,9 @@ def nms(boxes: np.ndarray, scores: np.ndarray, iou: float) -> np.ndarray:
         lt = np.maximum(boxes[i, :2], boxes[rest, :2])
         rb = np.minimum(boxes[i, 2:4], boxes[rest, 2:4])
         inter = np.prod(np.clip(rb - lt, 0, None), axis=1)
-        order = rest[inter / (areas[i] + areas[rest] - inter) <= iou]
+        # zero-area boxes give 0/0 -> NaN and are dropped; they cannot be faces
+        with np.errstate(invalid="ignore", divide="ignore"):
+            order = rest[inter / (areas[i] + areas[rest] - inter) <= iou]
     return np.array(keep, dtype=np.int64)
 
 

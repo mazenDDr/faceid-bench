@@ -1,0 +1,378 @@
+{
+  "test_people": 2865,
+  "test_pairs": {
+    "genuine": 13183,
+    "impostor": 16183403
+  },
+  "baseline": "mbf_w600k",
+  "models": {
+    "mbf_w600k": {
+      "lfw_10fold": {
+        "accuracy": 0.995,
+        "std": 0.00307,
+        "published": 0.997
+      },
+      "operating_points": {
+        "0.001": {
+          "threshold_from_dev": 0.22866,
+          "test_tar": 0.99439,
+          "test_tar_ci95": [
+            0.98959,
+            0.99803
+          ],
+          "test_far": 0.0009771121685593568,
+          "test_far_ci95": [
+            0.0009031818612966155,
+            0.0010586960333834258
+          ],
+          "test_false_accepts": 15813,
+          "test_tar_at_test_threshold": 0.99446
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.284,
+          "test_tar": 0.99166,
+          "test_tar_ci95": [
+            0.98607,
+            0.99593
+          ],
+          "test_far": 9.349084367484391e-05,
+          "test_far_ci95": [
+            7.85148175156653e-05,
+            0.00011149413313424052
+          ],
+          "test_false_accepts": 1513,
+          "test_tar_at_test_threshold": 0.99188
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.33802,
+          "test_tar": 0.98437,
+          "test_tar_ci95": [
+            0.97687,
+            0.99034
+          ],
+          "test_far": 8.836213248845128e-06,
+          "test_far_ci95": [
+            4.745510826993495e-06,
+            1.5571237866321953e-05
+          ],
+          "test_false_accepts": 143,
+          "test_tar_at_test_threshold": 0.98468
+        }
+      },
+      "fp16_check": {
+        "lfw_10fold": 0.995,
+        "test_tar": {
+          "0.001": 0.99439,
+          "0.0001": 0.99166,
+          "1e-05": 0.9843
+        }
+      },
+      "timed_model": "mbf_w600k_112",
+      "latency": {
+        "mac-m4pro_best": {
+          "p50_ms": 0.403,
+          "p95_ms": 0.428,
+          "setting": "ort-coreml:all:fp16",
+          "session_p50_ms": [
+            0.403,
+            0.431,
+            0.399
+          ]
+        },
+        "mac-m4pro_cpu": {
+          "p50_ms": 1.719,
+          "p95_ms": 1.839,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            1.719,
+            1.736,
+            1.708
+          ]
+        },
+        "rtx5060ti_cuda": {
+          "p50_ms": 1.391,
+          "p95_ms": 4.277,
+          "setting": "ort-cuda:cuda:fp32",
+          "session_p50_ms": [
+            1.237,
+            1.31,
+            1.391,
+            1.822,
+            3.618
+          ]
+        },
+        "rtx5060ti_cpu": {
+          "p50_ms": 3.628,
+          "p95_ms": 3.901,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            3.628,
+            3.606,
+            3.709,
+            3.644,
+            3.568
+          ]
+        }
+      }
+    },
+    "r50_w600k": {
+      "lfw_10fold": {
+        "accuracy": 0.99817,
+        "std": 0.00203,
+        "published": 0.9983
+      },
+      "operating_points": {
+        "0.001": {
+          "threshold_from_dev": 0.20335,
+          "test_tar": 0.99636,
+          "test_tar_ci95": [
+            0.9919,
+            0.99949
+          ],
+          "test_far": 0.0009985538888205405,
+          "test_far_ci95": [
+            0.0009164008807130114,
+            0.0010861104679615156
+          ],
+          "test_false_accepts": 16160,
+          "test_tar_at_test_threshold": 0.99636,
+          "tar_diff_vs_baseline": {
+            "mean": 0.00199,
+            "ci95": [
+              0.00068,
+              0.00385
+            ],
+            "significant": true
+          }
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.26268,
+          "test_tar": 0.9959,
+          "test_tar_ci95": [
+            0.99135,
+            0.99914
+          ],
+          "test_far": 8.119429516770978e-05,
+          "test_far_ci95": [
+            6.48081207483727e-05,
+            0.00010116309932204098
+          ],
+          "test_false_accepts": 1314,
+          "test_tar_at_test_threshold": 0.99598,
+          "tar_diff_vs_baseline": {
+            "mean": 0.00425,
+            "ci95": [
+              0.00198,
+              0.00732
+            ],
+            "significant": true
+          }
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.33067,
+          "test_tar": 0.99423,
+          "test_tar_ci95": [
+            0.98911,
+            0.99815
+          ],
+          "test_far": 5.808419897842252e-06,
+          "test_far_ci95": [
+            2.5775415381849793e-06,
+            1.2325713366793129e-05
+          ],
+          "test_false_accepts": 94,
+          "test_tar_at_test_threshold": 0.99522,
+          "tar_diff_vs_baseline": {
+            "mean": 0.00986,
+            "ci95": [
+              0.00607,
+              0.01466
+            ],
+            "significant": true
+          }
+        }
+      },
+      "fp16_check": {
+        "lfw_10fold": 0.99817,
+        "test_tar": {
+          "0.001": 0.99636,
+          "0.0001": 0.9959,
+          "1e-05": 0.99423
+        }
+      },
+      "timed_model": "r50_w600k_112",
+      "latency": {
+        "mac-m4pro_best": {
+          "p50_ms": 1.752,
+          "p95_ms": 1.821,
+          "setting": "ort-coreml:ane:fp16",
+          "session_p50_ms": [
+            1.748,
+            1.752,
+            1.755
+          ]
+        },
+        "mac-m4pro_cpu": {
+          "p50_ms": 13.594,
+          "p95_ms": 19.55,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            13.594,
+            12.204,
+            13.913
+          ]
+        },
+        "rtx5060ti_cuda": {
+          "p50_ms": 4.31,
+          "p95_ms": 14.501,
+          "setting": "ort-cuda:cuda:fp16",
+          "session_p50_ms": [
+            5.433,
+            4.31,
+            3.681,
+            3.694,
+            5.364
+          ]
+        },
+        "rtx5060ti_cpu": {
+          "p50_ms": 17.245,
+          "p95_ms": 18.333,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            17.103,
+            17.144,
+            17.308,
+            17.503,
+            17.245
+          ]
+        }
+      }
+    },
+    "sface": {
+      "lfw_10fold": {
+        "accuracy": 0.99417,
+        "std": 0.00367,
+        "published": 0.994
+      },
+      "operating_points": {
+        "0.001": {
+          "threshold_from_dev": 0.37141,
+          "test_tar": 0.99188,
+          "test_tar_ci95": [
+            0.98647,
+            0.99624
+          ],
+          "test_far": 0.0009109332567445796,
+          "test_far_ci95": [
+            0.0008343356805947582,
+            0.0009927197673072845
+          ],
+          "test_false_accepts": 14742,
+          "test_tar_at_test_threshold": 0.99226,
+          "tar_diff_vs_baseline": {
+            "mean": -0.00248,
+            "ci95": [
+              -0.00435,
+              -0.001
+            ],
+            "significant": true
+          }
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.42814,
+          "test_tar": 0.9871,
+          "test_tar_ci95": [
+            0.98079,
+            0.9923
+          ],
+          "test_far": 8.477821382808053e-05,
+          "test_far_ci95": [
+            7.116176606301403e-05,
+            9.883239028764712e-05
+          ],
+          "test_false_accepts": 1372,
+          "test_tar_at_test_threshold": 0.98764,
+          "tar_diff_vs_baseline": {
+            "mean": -0.00455,
+            "ci95": [
+              -0.00719,
+              -0.00225
+            ],
+            "significant": true
+          }
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.48551,
+          "test_tar": 0.96935,
+          "test_tar_ci95": [
+            0.95991,
+            0.97715
+          ],
+          "test_far": 7.291420722823253e-06,
+          "test_far_ci95": [
+            3.7342064856150496e-06,
+            1.4033876643024585e-05
+          ],
+          "test_false_accepts": 118,
+          "test_tar_at_test_threshold": 0.97337,
+          "tar_diff_vs_baseline": {
+            "mean": -0.01496,
+            "ci95": [
+              -0.02045,
+              -0.01037
+            ],
+            "significant": true
+          }
+        }
+      },
+      "fp16_check": null,
+      "timed_model": "sface_112",
+      "latency": {
+        "mac-m4pro_best": {
+          "p50_ms": 3.77,
+          "p95_ms": 4.044,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            3.743,
+            3.77,
+            3.801
+          ]
+        },
+        "mac-m4pro_cpu": {
+          "p50_ms": 3.77,
+          "p95_ms": 4.044,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            3.743,
+            3.77,
+            3.801
+          ]
+        },
+        "rtx5060ti_cuda": {
+          "p50_ms": 1.209,
+          "p95_ms": 1.319,
+          "setting": "ort-cuda:cuda:fp32",
+          "session_p50_ms": [
+            1.105,
+            1.209,
+            1.214,
+            1.184,
+            1.251
+          ]
+        },
+        "rtx5060ti_cpu": {
+          "p50_ms": 6.267,
+          "p95_ms": 7.01,
+          "setting": "ort-cpu:cpu:fp32",
+          "session_p50_ms": [
+            6.889,
+            6.266,
+            6.139,
+            6.296,
+            6.267
+          ]
+        }
+      }
+    }
+  }
+}

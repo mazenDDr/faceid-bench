@@ -8,6 +8,8 @@ post-processing are timed with the full pipeline later.
 import json
 from pathlib import Path
 
+from faceid_bench.results import latency_rows, latency_summary, ms
+
 # WIDER detector name -> fixed-shape model used for timing
 TIMED = {
     "yunet_2026may": "yunet_640",
@@ -21,29 +23,7 @@ TIMED = {
 FP16_CHECKED = {"scrfd_500m_kps", "scrfd_10g_kps"}
 
 compare = json.loads(Path("outputs/wider/compare.json").read_text())
-rows = []
-for f in sorted(Path("outputs").glob("latency_*.jsonl")):
-    rows += [json.loads(line) for line in f.read_text().splitlines() if line.strip()]
-rows = [r for r in rows if not r["note"]]  # drop any silent fallback
-
-
-def best(model: str, machine: str, fp16_ok: bool, backends: set[str]) -> dict | None:
-    names = {model} | ({f"{model}_fp16"} if fp16_ok else set())
-    found = [
-        r
-        for r in rows
-        if r["model"] in names and r["machine"] == machine and r["backend"] in backends
-    ]
-    if not found:
-        return None
-    r = min(found, key=lambda r: r["p50_ms"])
-    precision = "fp16" if r["model"].endswith("_fp16") else "fp32"
-    return {
-        "p50_ms": r["p50_ms"],
-        "p95_ms": r["p95_ms"],
-        "setting": f"{r['backend']}:{r['unit']}:{precision}",
-        "session_p50_ms": r["session_p50_ms"],
-    }
+rows = latency_rows()
 
 
 out = {"baseline": compare["baseline"], "n_boot": compare["n_boot"], "detectors": {}}
@@ -52,20 +32,9 @@ for name, model in TIMED.items():
     out["detectors"][name] = {
         "wider_val": compare["detectors"][name],
         "timed_model": model,
-        "latency": {
-            "mac-m4pro_best": best(model, "mac-m4pro", fp16_ok, {"ort-coreml", "ort-cpu"}),
-            "mac-m4pro_cpu": best(model, "mac-m4pro", False, {"ort-cpu"}),
-            "rtx5060ti_cuda": best(model, "rtx5060ti", fp16_ok, {"ort-cuda"}),
-            "rtx5060ti_cpu": best(model, "rtx5060ti", False, {"ort-cpu"}),
-        },
+        "latency": latency_summary(rows, model, fp16_ok),
     }
 Path("results/detectors.json").write_text(json.dumps(out, indent=2) + "\n")
-
-
-def ms(v: dict | None, show_setting: bool = False) -> str:
-    if v is None:
-        return "—"
-    return f"{v['p50_ms']:.2f}" + (f" ({v['setting'].split(':', 1)[1]})" if show_setting else "")
 
 
 print("| Detector | Easy AP | Medium AP | Hard AP | Mac best | Mac CPU | RTX CUDA | RTX host CPU |")
