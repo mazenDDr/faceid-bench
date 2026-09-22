@@ -13,6 +13,7 @@ demo:
 
 readme:
 	PYTHONPATH=src python scripts/build_readme.py
+	PYTHONPATH=src python scripts/build_site.py
 
 pull:
 	rsync -az --exclude-from=.pullignore gpu-box:$${GPU_REMOTE_DIR:-faceid-bench}/outputs/ ./outputs/

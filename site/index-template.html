@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>faceid-bench — pick your own unlock threshold</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fcfcfb; --card: #ffffff; --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #8a8983;
+  --line: #e4e3df; --grid: #efeeea;
+  --genuine: #2a78d6; --impostor: #eb6834;
+  --s0: #2a78d6; --s1: #eb6834; --s2: #1baf7a; --s3: #eda100;
+  --accent: #2a78d6; --good: #1a7f37; --bad: #c4312f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #1a1a19; --card: #232322; --ink: #ffffff; --ink-2: #c3c2b7; --ink-3: #8f8e86;
+    --line: #3a3a37; --grid: #2e2e2c;
+    --genuine: #3987e5; --impostor: #d95926;
+    --s0: #3987e5; --s1: #d95926; --s2: #199e70; --s3: #c98500;
+    --accent: #3987e5; --good: #4ac26b; --bad: #ff7b72;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+main { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+h2 { font-size: 21px; margin: 40px 0 6px; }
+p.lede { color: var(--ink-2); margin: 0 0 8px; }
+.note { color: var(--ink-2); font-size: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 14px; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin-bottom: 6px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+svg#dist, svg#timeline { display: block; width: 100%; }
+svg text { fill: var(--ink-2); font-size: 12px; }
+.axis line, .axis path { stroke: var(--line); }
+.gridline { stroke: var(--grid); }
+.controls { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+.control label { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-2); }
+.control output { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.presets { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button[aria-pressed=true] { border-color: var(--accent); color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+@media (min-width: 700px) { .stats { grid-template-columns: repeat(4, 1fr); } .controls { grid-template-columns: 1fr 1fr; } }
+.stat { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.stat b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--ink-2); }
+.tip { position: fixed; pointer-events: none; background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 6px 9px; font-size: 13px; color: var(--ink); box-shadow: 0 4px 14px rgba(0,0,0,.12); display: none; z-index: 5;
+  font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num, td.time { white-space: nowrap; }
+table { min-width: 620px; }
+th { color: var(--ink-2); font-weight: 600; }
+td.num, th.num { text-align: right; }
+.bar-row { cursor: default; }
+footer { margin-top: 48px; color: var(--ink-3); font-size: 13px; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pick your own unlock threshold</h1>
+  <p class="lede" id="lede"></p>
+  <p class="note">RGB only: there is no liveness check, so a photo of the enrolled person would unlock this. Measured on LFW photos, not live camera frames.</p>
+
+  <h2>Same person or not? Every test pair's score</h2>
+  <p class="note" id="scores-note"></p>
+  <div class="card">
+    <div class="legend"><span><i style="background:var(--genuine)"></i>same person</span><span><i style="background:var(--impostor)"></i>different people</span><span><i style="background:var(--ink)"></i>your unlock threshold</span></div>
+    <svg id="dist" role="img" aria-label="Distributions of similarity scores for same-person and different-person pairs, with the unlock threshold"></svg>
+    <div class="controls">
+      <div class="control">
+        <label for="thr">Unlock when similarity is above <output id="thr-out"></output></label>
+        <input id="thr" type="range" min="0" max="1" step="1">
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="control">
+        <label for="prior">How often the person trying is really you <output id="prior-out"></output></label>
+        <input id="prior" type="range" min="1" max="999" step="1" value="500">
+        <span class="note">Changes the probability below, not the error rates.</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="tar"></b><span>of your own attempts unlock</span></div>
+      <div class="stat"><b id="far"></b><span>strangers per million get in</span></div>
+      <div class="stat"><b id="fa"></b><span>stranger pairs above the line</span></div>
+      <div class="stat"><b id="p"></b><span>P(it's you) for a score right at the line</span></div>
+    </div>
+  </div>
+
+  <h2>One unlock attempt, stage by stage</h2>
+  <p class="note" id="timeline-note"></p>
+  <div class="card">
+    <div class="legend"><span><i style="background:var(--s0)"></i>find face</span><span><i style="background:var(--s1)"></i>align</span><span><i style="background:var(--s2)"></i>embed</span><span><i style="background:var(--s3)"></i>decide</span></div>
+    <svg id="timeline" role="img" aria-label="Stage timeline of one unlock attempt, with and without Laya deciding"></svg>
+    <button id="replay" type="button">Replay at real speed ×1/60</button>
+  </div>
+
+  <h2>Laya versus two numbers, for the final yes/no</h2>
+  <p class="note">Laya reads text or JSON, not pixels, so it cannot find a face. It can make the last decision from the pipeline's numbers. Same test pairs for every row.</p>
+  <div class="card scroll"><table id="laya"></table></div>
+
+  <footer>
+    Every number on this page is read from the committed results files by <code>scripts/build_site.py</code>.
+    Source and method: <a href="https://github.com/mazenDDr/faceid-bench">faceid-bench</a>.
+  </footer>
+</main>
+<div class="tip" id="tip"></div>
+<script id="data" type="application/json">/*__DATA__*/null</script>
+<script>
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const NS = "http://www.w3.org/2000/svg";
+const $ = (id) => document.getElementById(id);
+const el = (tag, attrs = {}, parent) => {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fmtPct = (v) => (v * 100).toFixed(v > 0.999 ? 2 : 1) + "%";
+const tip = $("tip");
+function showTip(evt, html) {
+  tip.innerHTML = html; tip.style.display = "block";
+  const x = Math.min(evt.clientX + 14, innerWidth - tip.offsetWidth - 8);
+  tip.style.left = x + "px"; tip.style.top = (evt.clientY + 14) + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+
+// ---------------------------------------------------------------- threshold explorer
+const S = DATA.scores, edges = S.edges, G = S.genuine, I = S.impostor;
+const nG = G.reduce((a, b) => a + b, 0), nI = I.reduce((a, b) => a + b, 0);
+// counts at or above each edge (exact: accept when score >= edge)
+const tailG = new Array(edges.length).fill(0), tailI = new Array(edges.length).fill(0);
+for (let k = edges.length - 2; k >= 0; k--) { tailG[k] = tailG[k + 1] + G[k]; tailI[k] = tailI[k + 1] + I[k]; }
+$("lede").textContent = DATA.lede;
+$("scores-note").textContent = `${nG.toLocaleString()} same-person and ${nI.toLocaleString()} different-person pairs of ${S.people.toLocaleString()} test people (LFW), balanced pipeline. Each bin is 0.005 wide; the height is the share of that kind of pair in the bin, on a log scale so the rare overlap is visible.`;
+
+const thr = $("thr"), prior = $("prior");
+thr.max = edges.length - 2;
+const nearestEdge = (t) => edges.findIndex((e) => e >= t - 1e-9);
+const presets = DATA.presets.map((p) => ({ ...p, k: nearestEdge(p.threshold) }));
+const presetBox = $("presets");
+presets.forEach((p) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.textContent = p.label; b.setAttribute("aria-pressed", "false");
+  b.onclick = () => { thr.value = p.k; update(); };
+  presetBox.appendChild(b); p.button = b;
+});
+thr.value = presets[presets.length - 1].k;
+
+const dist = $("dist");
+let W = 0, H = 300, M = { l: 48, r: 12, t: 10, b: 36 }, xs, ys, thrLine;
+const LOGMIN = -8;
+function drawDist() {
+  W = dist.clientWidth || dist.parentNode.clientWidth;
+  dist.setAttribute("viewBox", `0 0 ${W} ${H}`); dist.setAttribute("height", H);
+  dist.innerHTML = "";
+  const x0 = edges[0], x1 = edges[edges.length - 1];
+  xs = (v) => M.l + (v - x0) / (x1 - x0) * (W - M.l - M.r);
+  ys = (v) => M.t + (1 - (v - LOGMIN) / (0 - LOGMIN)) * (H - M.t - M.b);
+  const axis = el("g", { class: "axis" }, dist);
+  for (let p = LOGMIN; p <= 0; p += 2) {
+    el("line", { x1: M.l, x2: W - M.r, y1: ys(p), y2: ys(p), class: "gridline" }, axis);
+    el("text", { x: M.l - 6, y: ys(p) + 4, "text-anchor": "end" }, axis).textContent = p === 0 ? "100%" : `1e${p}`;
+  }
+  for (let v = -0.2; v <= 1.0001; v += 0.2) {
+    el("text", { x: xs(v), y: H - M.b + 18, "text-anchor": "middle" }, axis).textContent = v.toFixed(1);
+  }
+  el("text", { x: (M.l + W - M.r) / 2, y: H - 4, "text-anchor": "middle" }, axis).textContent = "similarity of the two faces (cosine)";
+  for (const [counts, n, color] of [[I, nI, "var(--impostor)"], [G, nG, "var(--genuine)"]]) {
+    let d = "", open = false;
+    counts.forEach((c, k) => {
+      if (!c) { open = false; return; }
+      const y = ys(Math.log10(c / n));
+      d += `${open ? "L" : "M"}${xs(edges[k])},${y}L${xs(edges[k + 1])},${y}`;
+      open = true;
+    });
+    el("path", { d, fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }, dist);
+  }
+  // lines never take the pointer, or they would end the hover they are drawn by
+  thrLine = el("line", { y1: M.t, y2: H - M.b, stroke: "var(--ink)", "stroke-width": 2, "pointer-events": "none" }, dist);
+  const hit = el("rect", { x: M.l, y: M.t, width: W - M.l - M.r, height: H - M.t - M.b, fill: "transparent" }, dist);
+  const cross = el("line", { y1: M.t, y2: H - M.b, stroke: "var(--ink-3)", "stroke-dasharray": "3 3", visibility: "hidden", "pointer-events": "none" }, dist);
+  hit.addEventListener("pointermove", (evt) => {
+    const box = dist.getBoundingClientRect();
+    const v = edges[0] + (evt.clientX - box.left - M.l) / (W - M.l - M.r) * (edges[edges.length - 1] - edges[0]);
+    const k = Math.max(0, Math.min(edges.length - 2, Math.floor((v - edges[0]) / 0.005)));
+    cross.setAttribute("x1", xs(edges[k] + 0.0025)); cross.setAttribute("x2", xs(edges[k] + 0.0025));
+    cross.setAttribute("visibility", "visible");
+    showTip(evt, `score ${edges[k].toFixed(3)}–${edges[k + 1].toFixed(3)}<br>same person: ${G[k].toLocaleString()} pairs<br>different people: ${I[k].toLocaleString()} pairs`);
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); hideTip(); });
+  hit.addEventListener("click", (evt) => {
+    const box = dist.getBoundingClientRect();
+    const v = edges[0] + (evt.clientX - box.left - M.l) / (W - M.l - M.r) * (edges[edges.length - 1] - edges[0]);
+    thr.value = Math.max(0, Math.min(edges.length - 2, Math.round((v - edges[0]) / 0.005))); update();
+  });
+  update();
+}
+function update() {
+  const k = +thr.value, t = edges[k];
+  thrLine.setAttribute("x1", xs(t)); thrLine.setAttribute("x2", xs(t));
+  $("thr-out").textContent = t.toFixed(3);
+  const pr = +prior.value / 1000;
+  $("prior-out").textContent = fmtPct(pr).replace(/\.0%$/, "%");
+  $("tar").textContent = fmtPct(tailG[k] / nG);
+  const far = tailI[k] / nI;
+  $("far").textContent = (far * 1e6).toFixed(far * 1e6 < 10 ? 1 : 0);
+  $("fa").textContent = tailI[k].toLocaleString();
+  const llr = DATA.platt[0] * t + DATA.platt[1] + Math.log(pr / (1 - pr));
+  $("p").textContent = fmtPct(1 / (1 + Math.exp(-llr)));
+  presets.forEach((p) => p.button.setAttribute("aria-pressed", String(p.k === k)));
+}
+thr.addEventListener("input", update);
+prior.addEventListener("input", update);
+
+// ---------------------------------------------------------------- stage timeline
+const STAGES = [["detect_ms", "find face"], ["align_ms", "align"], ["embed_ms", "embed"], ["decide_ms", "decide"]];
+const tl = $("timeline");
+$("timeline-note").textContent = DATA.timeline_note;
+let runId = 0;
+function drawTimeline(animate) {
+  const id = ++runId;
+  const w = tl.clientWidth || tl.parentNode.clientWidth;
+  const narrow = w < 560;  // phone: the numbers line is split over two lines
+  const rowH = narrow ? 104 : 86, h = 30 + rowH * DATA.timeline.length;
+  tl.setAttribute("viewBox", `0 0 ${w} ${h}`); tl.setAttribute("height", h); tl.innerHTML = "";
+  const max = Math.max(...DATA.timeline.map((r) => r.times.total_ms)) * 1.02;
+  const px = (w - 16) / max;
+  DATA.timeline.forEach((row, i) => {
+    const y = 26 + i * rowH;
+    const label = el("text", { x: 0, y: y - 8 }, tl);
+    label.textContent = `${row.label} — ${row.times.total_ms.toFixed(2)} ms`;
+    label.style.fill = "var(--ink)"; label.style.fontSize = "14px"; label.style.fontWeight = "600";
+    let x = 0, delay = 250 + i * 300;
+    STAGES.forEach(([key, name], j) => {
+      const ms = row.times[key], wd = Math.max(ms * px - 2, 0.8);
+      const r = el("rect", { x, y, height: 28, width: animate && !reduced ? 0 : wd, rx: 4, fill: `var(--s${j})` }, tl);
+      r.addEventListener("pointermove", (evt) => showTip(evt, `${name}: <b>${ms < 0.1 ? ms.toFixed(3) : ms.toFixed(2)} ms</b>`));
+      r.addEventListener("pointerleave", hideTip);
+      if (animate && !reduced) {
+        const dur = Math.max(ms * 60, 40);  // 1 ms of compute = 60 ms on screen
+        setTimeout(() => {
+          if (id !== runId) return;  // a newer replay started: drop this one
+          r.animate([{ width: "0px" }, { width: wd + "px" }], { duration: dur, easing: "linear", fill: "forwards" });
+        }, delay);
+        delay += dur;
+      }
+      x += ms * px;
+    });
+    const parts = STAGES.map(([k, n]) => `${n} ${row.times[k] < 0.1 ? row.times[k].toFixed(3) : row.times[k].toFixed(2)}`);
+    const lines = narrow ? [parts.slice(0, 2).join(" · "), parts.slice(2).join(" · ") + " ms"] : [parts.join(" · ") + " ms"];
+    lines.forEach((text, n) => { el("text", { x: 0, y: y + 48 + n * 17 }, tl).textContent = text; });
+  });
+}
+$("replay").onclick = () => drawTimeline(true);
+new IntersectionObserver((entries, obs) => {
+  if (entries[0].isIntersecting) { drawTimeline(true); obs.disconnect(); }
+}).observe(tl);
+
+// ---------------------------------------------------------------- Laya table
+const lt = $("laya");
+lt.innerHTML = `<thead><tr><th>Decision step</th><th class="num">AUC</th><th class="num">TAR @ 1 in 1,000</th><th class="num">Cllr</th><th>vs two numbers (paired)</th><th class="num">Time per decision</th></tr></thead>`;
+const tb = document.createElement("tbody");
+DATA.laya.forEach((r) => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${r.label}</td><td class="num">${r.auc.toFixed(4)}</td><td class="num">${r.tar.toFixed(4)}</td><td class="num">${r.cllr.toFixed(4)}</td><td>${r.versus}</td><td class="num time">${r.time}</td>`;
+  tb.appendChild(tr);
+});
+lt.appendChild(tb);
+
+drawDist();
+drawTimeline(false);
+let resizeTimer;
+addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { drawDist(); drawTimeline(false); }, 120); });
+</script>
+</body>
+</html>

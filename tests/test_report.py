@@ -35,3 +35,15 @@ def test_readme_is_up_to_date_with_results():
     pipeline = report.load("pipeline")
     assert report.pipeline_table(pipeline) in text
     assert report.laya_table(report.load("laya")) in text
+
+
+def test_built_site_embeds_valid_data():
+    site = Path("site/index.html")
+    if not site.exists():
+        pytest.skip("site not built")
+    html = site.read_text()
+    assert "/*__DATA__*/" not in html
+    raw = html.split('<script id="data" type="application/json">', 1)[1].split("</script>", 1)[0]
+    data = json.loads(raw.replace("<\\/", "</"))
+    assert sum(data["scores"]["genuine"]) > 0 and len(data["presets"]) == 3
+    assert data["laya"][0]["label"].startswith("Two numbers")

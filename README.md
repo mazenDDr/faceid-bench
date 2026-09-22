@@ -56,6 +56,10 @@ iPhone.
 **Balanced** is the pick: as accurate as the 640 px version (the difference is not significant) in
 under half the time.
 
+**Pick your own unlock threshold:** `site/index.html` (built by `make readme`) shows every test pair's
+score and lets you move the unlock line and the prior, with the true-accept rate, strangers per
+million and the calibrated probability updating live.
+
 ## Where Laya fits
 
 Laya reads **text or JSON, not pixels**, so it cannot find a face in an image. It can do the last
