@@ -48,6 +48,8 @@ class Timing:
     mean_ms: float
     min_ms: float
     load_ms: float
+    sessions: int = 1
+    session_p50_ms: list[float] = field(default_factory=list)
     active: list[str] = field(default_factory=list)
     note: str = ""
 
@@ -109,6 +111,10 @@ def onnx_session(path: str, backend: str, unit: str = "all"):
     """onnxruntime session on one provider, CPU fallback allowed but reported via `active`."""
     import onnxruntime as ort
 
+    if backend in ("cuda", "tensorrt") and hasattr(ort, "preload_dlls"):
+        # CUDA/cuDNN come from the nvidia pip wheels; without this the CUDA provider only
+        # loads if torch happened to be imported first, and silently falls back to CPU.
+        ort.preload_dlls()
     provider = ORT_PROVIDERS[backend]
     if backend == "coreml":
         options = {"ModelFormat": "MLProgram", "MLComputeUnits": COREML_UNITS[unit][1]}
@@ -123,15 +129,28 @@ def onnx_session(path: str, backend: str, unit: str = "all"):
 
 
 def time_onnx(
-    path: str, backend: str, unit: str = "all", warmup: int = 20, runs: int = 200
+    path: str,
+    backend: str,
+    unit: str = "all",
+    warmup: int = 20,
+    runs: int = 200,
+    sessions: int = 3,
 ) -> Timing:
-    start = time.perf_counter()
-    session = onnx_session(path, backend, unit)
-    load_ms = (time.perf_counter() - start) * 1e3
-    feed = random_feed(session)
+    """Time `sessions` fresh sessions; report the median session's percentiles.
+
+    On the RTX box a new CUDA session can come up 2.5x slower than the one before (same model,
+    same settings), so one session is not a reliable number. Every session's p50 is kept.
+    """
+    per_session, loads = [], []
+    for _ in range(sessions):
+        start = time.perf_counter()
+        session = onnx_session(path, backend, unit)
+        loads.append((time.perf_counter() - start) * 1e3)
+        feed = random_feed(session)
+        run = lambda s=session, f=feed: s.run(None, f)  # noqa: E731
+        per_session.append(summarize(measure(run, warmup, runs)))
+        active = session.get_providers()
     shape = list(next(iter(feed.values())).shape)
-    times = measure(lambda: session.run(None, feed), warmup, runs)
-    active = session.get_providers()
     wanted = ORT_PROVIDERS[backend]
     return Timing(
         model=Path(path).stem,
@@ -141,11 +160,19 @@ def time_onnx(
         input_shape=shape,
         warmup=warmup,
         runs=runs,
-        load_ms=round(load_ms, 1),
+        load_ms=round(statistics.median(loads), 1),
+        sessions=sessions,
+        session_p50_ms=[s["p50_ms"] for s in per_session],
         active=active,
         note="" if active[0] == wanted else f"{wanted} not active; ran on {active[0]}",
-        **summarize(times),
+        **median_session(per_session),
     )
+
+
+def median_session(per_session: list[dict[str, float]]) -> dict[str, float]:
+    """Percentiles of the session whose p50 is the median (lower median for even counts)."""
+    ranked = sorted(per_session, key=lambda s: s["p50_ms"])
+    return ranked[(len(ranked) - 1) // 2]
 
 
 def time_coreml(path: str, unit: str = "ane", warmup: int = 20, runs: int = 200) -> Timing:

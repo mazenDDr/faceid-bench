@@ -67,3 +67,26 @@ def test_missing_provider_is_reported_not_hidden(tmp_path):
     t = time_onnx(path, "cuda", warmup=1, runs=2)
     assert t.active[0] == "CPUExecutionProvider"
     assert "not active" in t.note
+
+
+def test_median_session_picks_middle_p50():
+    from faceid_bench.latency import median_session
+
+    sessions = [
+        {"p50_ms": 6.7, "p95_ms": 7.0},
+        {"p50_ms": 2.6, "p95_ms": 3.0},
+        {"p50_ms": 2.7, "p95_ms": 3.1},
+    ]
+    assert median_session(sessions) == {"p50_ms": 2.7, "p95_ms": 3.1}
+    assert median_session(sessions[:2])["p50_ms"] == 2.6
+
+
+def test_time_onnx_keeps_every_session(tmp_path):
+    pytest.importorskip("onnxruntime")
+    from faceid_bench.latency import time_onnx
+
+    path = str(tmp_path / "tiny.onnx")
+    tiny_onnx(path)
+    t = time_onnx(path, "cpu", warmup=1, runs=3, sessions=3)
+    assert t.sessions == 3 and len(t.session_p50_ms) == 3
+    assert t.p50_ms == sorted(t.session_p50_ms)[1]
