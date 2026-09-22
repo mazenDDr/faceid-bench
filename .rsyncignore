@@ -1,0 +1,13 @@
+# Never pushed to gpu-box, and never deleted there by `rsync --delete`.
+# A leading "/" anchors to the project root, so a code package like src/pkg/data/ is still pushed.
+/data/
+/outputs/
+__pycache__/
+*.pyc
+.git/
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+/experiments/results/
+/models/
