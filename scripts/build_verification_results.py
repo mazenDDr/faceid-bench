@@ -14,12 +14,14 @@ TIMED = {"mbf_w600k": "mbf_w600k_112", "r50_w600k": "r50_w600k_112", "sface": "s
 FP16_CHECKED = {"mbf_w600k", "r50_w600k"}  # sface fp16 export fails to load (BatchNorm dtype)
 
 compare = json.loads(Path("outputs/verification/compare.json").read_text())
+clean = json.loads(Path("outputs/verification/compare_clean.json").read_text())
 rows = latency_rows()
 models = compare["models"]
 out = {
     "test_people": compare["test_people"],
     "test_pairs": compare["test_pairs"],
     "baseline": compare["baseline"],
+    "label_errors_removed_test_people": clean["test_people"],
     "models": {},
 }
 for name, model in TIMED.items():
@@ -34,6 +36,7 @@ for name, model in TIMED.items():
             "lfw_10fold": fp16["lfw_10fold"]["accuracy"],
             "test_tar": {k: v["test_tar"] for k, v in fp16["operating_points"].items()},
         },
+        "operating_points_label_errors_removed": clean["models"][name]["operating_points"],
         "timed_model": model,
         "latency": latency_summary(rows, model, name in FP16_CHECKED),
     }

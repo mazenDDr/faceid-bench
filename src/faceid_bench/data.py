@@ -114,6 +114,17 @@ def read_lfw_pairs(path: str | Path) -> list[tuple[int, str, str, bool]]:
     return pairs
 
 
+# LFW images whose label is wrong, confirmed by looking at them while tracing the worst pairs of
+# the ResNet-50 model on test people (2026-09-22). Only used for a sensitivity check; the main
+# results keep the official labels. The search covered the top pairs only, so more may exist.
+LFW_LABEL_ERRORS = {
+    "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg": "shows a different man",
+    "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg": "shows Abdullah Gul",
+    "Gabrielle_Rose/Gabrielle_Rose_0001.jpg": "same photo as Martha_Bowen_0002",
+    "Martha_Bowen/Martha_Bowen_0002.jpg": "same photo as Gabrielle_Rose_0001",
+}
+
+
 def split_of(identity: str, test_share: float = 0.5, salt: str = "faceid-bench") -> str:
     """'dev' or 'test' from a hash of the identity name: stable, no randomness to record."""
     digest = hashlib.sha256(f"{salt}:{identity}".encode()).digest()
@@ -121,7 +132,7 @@ def split_of(identity: str, test_share: float = 0.5, salt: str = "faceid-bench")
 
 
 def identity_split(
-    images: dict[str, list[str]], max_per_identity: int = 20
+    images: dict[str, list[str]], max_per_identity: int = 20, drop: set[str] = frozenset()
 ) -> dict[str, dict[str, list[str]]]:
     """Split identities into dev/test and cap images per identity.
 
@@ -130,7 +141,9 @@ def identity_split(
     """
     split: dict[str, dict[str, list[str]]] = {"dev": {}, "test": {}}
     for identity, paths in images.items():
-        split[split_of(identity)][identity] = paths[:max_per_identity]
+        kept = [p for p in paths[:max_per_identity] if p not in drop]
+        if kept:
+            split[split_of(identity)][identity] = kept
     return split
 
 

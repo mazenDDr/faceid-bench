@@ -5,6 +5,7 @@
     "impostor": 16183403
   },
   "baseline": "mbf_w600k",
+  "label_errors_removed_test_people": 2864,
   "models": {
     "mbf_w600k": {
       "lfw_10fold": {
@@ -65,6 +66,53 @@
           "0.001": 0.99439,
           "0.0001": 0.99166,
           "1e-05": 0.9843
+        }
+      },
+      "operating_points_label_errors_removed": {
+        "0.001": {
+          "threshold_from_dev": 0.22866,
+          "test_tar": 0.99734,
+          "test_tar_ci95": [
+            0.99512,
+            0.99885
+          ],
+          "test_far": 0.000974896854613332,
+          "test_far_ci95": [
+            0.0009004133988494655,
+            0.0010626314485023957
+          ],
+          "test_false_accepts": 15755,
+          "test_tar_at_test_threshold": 0.99741
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.284,
+          "test_tar": 0.9946,
+          "test_tar_ci95": [
+            0.99085,
+            0.99734
+          ],
+          "test_far": 9.182779639772672e-05,
+          "test_far_ci95": [
+            7.65296241093015e-05,
+            0.000108386699087414
+          ],
+          "test_false_accepts": 1484,
+          "test_tar_at_test_threshold": 0.99483
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.33802,
+          "test_tar": 0.98729,
+          "test_tar_ci95": [
+            0.98045,
+            0.99263
+          ],
+          "test_far": 7.611063987143119e-06,
+          "test_far_ci95": [
+            4.651217657629536e-06,
+            1.167121055291403e-05
+          ],
+          "test_false_accepts": 123,
+          "test_tar_at_test_threshold": 0.98844
         }
       },
       "timed_model": "mbf_w600k_112",
@@ -200,6 +248,77 @@
           "1e-05": 0.99423
         }
       },
+      "operating_points_label_errors_removed": {
+        "0.001": {
+          "threshold_from_dev": 0.20335,
+          "test_tar": 0.99932,
+          "test_tar_ci95": [
+            0.99865,
+            0.99984
+          ],
+          "test_far": 0.0009973587751607544,
+          "test_far_ci95": [
+            0.0009172940019415804,
+            0.0010919873415575515
+          ],
+          "test_false_accepts": 16118,
+          "test_tar_at_test_threshold": 0.99932,
+          "tar_diff_vs_baseline": {
+            "mean": 0.002,
+            "ci95": [
+              0.00065,
+              0.00389
+            ],
+            "significant": true
+          }
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.26268,
+          "test_tar": 0.99886,
+          "test_tar_ci95": [
+            0.99779,
+            0.99964
+          ],
+          "test_far": 7.96377183044975e-05,
+          "test_far_ci95": [
+            6.372435936082962e-05,
+            0.0001000305091277563
+          ],
+          "test_false_accepts": 1287,
+          "test_tar_at_test_threshold": 0.99893,
+          "tar_diff_vs_baseline": {
+            "mean": 0.0043,
+            "ci95": [
+              0.00197,
+              0.00732
+            ],
+            "significant": true
+          }
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.33067,
+          "test_tar": 0.99719,
+          "test_tar_ci95": [
+            0.99444,
+            0.99913
+          ],
+          "test_far": 4.579014106086104e-06,
+          "test_far_ci95": [
+            2.298011341899841e-06,
+            7.948612493313481e-06
+          ],
+          "test_false_accepts": 74,
+          "test_tar_at_test_threshold": 0.99825,
+          "tar_diff_vs_baseline": {
+            "mean": 0.00999,
+            "ci95": [
+              0.00594,
+              0.01458
+            ],
+            "significant": true
+          }
+        }
+      },
       "timed_model": "r50_w600k_112",
       "latency": {
         "mac-m4pro_best": {
@@ -326,6 +445,77 @@
         }
       },
       "fp16_check": null,
+      "operating_points_label_errors_removed": {
+        "0.001": {
+          "threshold_from_dev": 0.37141,
+          "test_tar": 0.99483,
+          "test_tar_ci95": [
+            0.99089,
+            0.99753
+          ],
+          "test_far": 0.0009076348501090672,
+          "test_far_ci95": [
+            0.0008264897612420734,
+            0.000991305486510947
+          ],
+          "test_false_accepts": 14668,
+          "test_tar_at_test_threshold": 0.99521,
+          "tar_diff_vs_baseline": {
+            "mean": -0.00257,
+            "ci95": [
+              -0.0043,
+              -0.001
+            ],
+            "significant": true
+          }
+        },
+        "0.0001": {
+          "threshold_from_dev": 0.42814,
+          "test_tar": 0.99003,
+          "test_tar_ci95": [
+            0.98439,
+            0.99408
+          ],
+          "test_far": 8.335043244456732e-05,
+          "test_far_ci95": [
+            7.134137756147696e-05,
+            9.711968884069728e-05
+          ],
+          "test_false_accepts": 1347,
+          "test_tar_at_test_threshold": 0.99057,
+          "tar_diff_vs_baseline": {
+            "mean": -0.00466,
+            "ci95": [
+              -0.00725,
+              -0.00219
+            ],
+            "significant": true
+          }
+        },
+        "1e-05": {
+          "threshold_from_dev": 0.48551,
+          "test_tar": 0.97223,
+          "test_tar_ci95": [
+            0.9627,
+            0.98022
+          ],
+          "test_far": 6.064099762114029e-06,
+          "test_far_ci95": [
+            3.5870479354076232e-06,
+            9.628338375823854e-06
+          ],
+          "test_false_accepts": 98,
+          "test_tar_at_test_threshold": 0.9768,
+          "tar_diff_vs_baseline": {
+            "mean": -0.01523,
+            "ci95": [
+              -0.02053,
+              -0.01013
+            ],
+            "significant": true
+          }
+        }
+      },
       "timed_model": "sface_112",
       "latency": {
         "mac-m4pro_best": {
