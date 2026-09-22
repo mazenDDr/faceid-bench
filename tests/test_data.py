@@ -81,3 +81,12 @@ def test_real_wider_subsets_if_downloaded():
     subsets = read_wider_subsets(tools)
     assert len(subsets["hard"]) == 3226
     assert np.all([len(v) >= 0 for v in subsets["easy"].values()])
+
+
+def test_identity_split_can_drop_images_and_whole_identities():
+    images = {n: [f"{n}/{n}_{i}.jpg" for i in range(3)] for n in ("Ann", "Bob", "Cy")}
+    split = identity_split(images, drop={"Ann/Ann_1.jpg"}, drop_identities={"Bob"})
+    everyone = {**split["dev"], **split["test"]}
+    assert "Bob" not in everyone
+    assert everyone["Ann"] == ["Ann/Ann_0.jpg", "Ann/Ann_2.jpg"]
+    assert len(everyone["Cy"]) == 3
