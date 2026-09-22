@@ -8,7 +8,8 @@ item from its source into `data/` (git-ignored); `data/SHA256SUMS` records what 
 | WIDER FACE val (3,226 images) + boxes | Detection accuracy (AP easy / medium / hard) | Hugging Face `CUHK-CSE/wider_face` | CC BY-NC-ND 4.0; non-commercial research |
 | WIDER FACE `eval_tools` | Official easy / medium / hard face subsets | WIDER FACE project site | Distributed with the benchmark for evaluation |
 | LFW (13,233 images, 5,749 people) + `pairs.txt` | Verification accuracy, TAR at fixed FAR, calibration | scikit-learn's figshare mirror of the UMass release | No formal licence; images of public figures from news sites, released for research |
-| YuNet (`face_detection_yunet_2023mar.onnx`) | Detector baseline, latency smoke test | OpenCV Zoo | MIT |
+| YuNet (`2023mar`, `2026may` ONNX) | Detector | OpenCV Zoo | MIT |
+| SCRFD 500M / 10G with keypoints (`det_500m`, `det_10g` in `buffalo_s` / `buffalo_l`) | Detector | InsightFace v0.7 release | Models: non-commercial research only (InsightFace code is MIT) |
 
 ## Splits
 
