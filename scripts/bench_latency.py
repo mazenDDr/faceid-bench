@@ -9,7 +9,7 @@ Examples:
 import argparse
 from dataclasses import asdict
 
-from faceid_bench.latency import append, time_coreml, time_onnx
+from faceid_bench.latency import append, machine_label, time_coreml, time_onnx
 
 parser = argparse.ArgumentParser()
 parser.add_argument("model")
@@ -17,8 +17,10 @@ parser.add_argument("--onnx", nargs="*", default=[], help="backend or coreml:<un
 parser.add_argument("--coreml", nargs="*", default=[], help="cpu | gpu | ane | all")
 parser.add_argument("--warmup", type=int, default=20)
 parser.add_argument("--runs", type=int, default=200)
-parser.add_argument("--out", default="outputs/latency.jsonl")
+parser.add_argument("--out", help="default: outputs/latency_<machine>.jsonl")
 args = parser.parse_args()
+# One file per machine: `./gpu pull` copies outputs/ back and would overwrite a shared name.
+args.out = args.out or f"outputs/latency_{machine_label()}.jsonl"
 
 results = []
 for spec in args.onnx:
