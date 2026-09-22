@@ -47,3 +47,19 @@ def test_built_site_embeds_valid_data():
     data = json.loads(raw.replace("<\\/", "</"))
     assert sum(data["scores"]["genuine"]) > 0 and len(data["presets"]) == 3
     assert data["laya"][0]["label"].startswith("Two numbers")
+
+
+@pytest.mark.skipif(not Path("results/trace.json").exists(), reason="no trace")
+def test_how_it_works_animation_matches_the_trace():
+    from faceid_bench.hero_pipeline import pipeline_svg
+
+    trace = report.load("trace")
+    for kind in ("genuine", "impostor"):
+        t = trace[kind]
+        assert sum(t["contributions"]) == pytest.approx(t["similarity"], abs=1e-3)
+        assert len(t["contributions"]) == 32 and len(t["landmarks"]) == 5
+    assert trace["genuine"]["similarity"] > trace["threshold"] > trace["impostor"]["similarity"]
+    svg, alt = pipeline_svg(trace)
+    xml.dom.minidom.parseString(svg)
+    assert "UNLOCKED" in svg and "LOCKED" in svg and "prefers-reduced-motion" in svg
+    assert f"{trace['genuine']['similarity']:.3f}" in alt

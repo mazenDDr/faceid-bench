@@ -3,11 +3,14 @@
 from pathlib import Path
 
 from faceid_bench import report
+from faceid_bench.hero_pipeline import pipeline_svg
 
 pipeline = report.load("pipeline")
 svg, alt = report.hero_svg(pipeline)
 Path("docs/assets").mkdir(parents=True, exist_ok=True)
 Path("docs/assets/hero.svg").write_text(svg)
+how_svg, how_alt = pipeline_svg(report.load("trace"))
+Path("docs/assets/how-it-works.svg").write_text(how_svg)
 
 balanced = pipeline["configs"]["balanced"]
 tagline = (
@@ -18,6 +21,10 @@ tagline = (
 )
 blocks = {
     "HERO": (
+        '<p align="center">\n  <img src="docs/assets/how-it-works.svg" width="100%" '
+        f'alt="{how_alt}">\n</p>'
+    ),
+    "TIMELINE": (
         f'<p align="center">\n  <img src="docs/assets/hero.svg" width="100%" alt="{alt}">\n</p>'
     ),
     "TAGLINE": tagline,
