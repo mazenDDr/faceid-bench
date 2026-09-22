@@ -40,12 +40,17 @@ class Pipeline:
             return None
         return det[np.argmax(det[:, 2] * det[:, 3])]
 
-    def embed(self, frame: np.ndarray, times: dict | None = None) -> np.ndarray | None:
+    def embed(
+        self, frame: np.ndarray, times: dict | None = None, info: dict | None = None
+    ) -> np.ndarray | None:
+        """Embedding of the chosen face, or None. `info["face"]` receives its detection row."""
         times = {} if times is None else times
         t0 = time.perf_counter()
         face = self.pick(self.detector(frame))
         t1 = time.perf_counter()
         times["detect_ms"] = (t1 - t0) * 1e3
+        if info is not None:
+            info["face"] = face
         if face is None:
             return None
         crop = align(frame, face[4:14])
@@ -57,8 +62,8 @@ class Pipeline:
 
     def verify(self, frame: np.ndarray, template: np.ndarray, prior: float = 0.5) -> dict:
         """One unlock attempt: returns probability, LLR, similarity and per-stage times."""
-        start, times = time.perf_counter(), {}
-        emb = self.embed(frame, times)
+        start, times, info = time.perf_counter(), {}, {}
+        emb = self.embed(frame, times, info)
         t = time.perf_counter()
         if emb is None:
             result = {"face": False, "probability": 0.0}
@@ -71,6 +76,7 @@ class Pipeline:
                 "similarity": sim,
                 "llr": llr,
                 "probability": float(probability(llr, prior)),
+                "face_row": info["face"],
             }
         times["decide_ms"] = (time.perf_counter() - t) * 1e3
         times["total_ms"] = (time.perf_counter() - start) * 1e3
