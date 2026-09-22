@@ -1,0 +1,303 @@
+{
+  "test_pairs": [
+    2000,
+    20000
+  ],
+  "dev_pairs": [
+    1000,
+    10000
+  ],
+  "far": 0.001,
+  "methods": {
+    "platt_cosine": {
+      "auc": 0.99946,
+      "tar_at_far_1e-3": 0.997,
+      "tar_ci95": [
+        0.99246,
+        1.0
+      ],
+      "test_far": 0.0005,
+      "cllr": 0.01518,
+      "cllr_ci95": [
+        0.00275,
+        0.03339
+      ],
+      "ece": 0.00111,
+      "ms_per_decision_rtx": null
+    },
+    "laya_plain": {
+      "auc": 0.82513,
+      "tar_at_far_1e-3": 0.001,
+      "tar_ci95": [
+        0.0,
+        0.00267
+      ],
+      "test_far": 0.0006,
+      "cllr": 1.96934,
+      "cllr_ci95": [
+        1.96705,
+        1.97204
+      ],
+      "ece": 0.43309,
+      "ms_per_decision_rtx": 29.35,
+      "cllr_minus_platt_cosine": {
+        "mean": 1.95392,
+        "ci95": [
+          1.93661,
+          1.96617
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.99602,
+        "ci95": [
+          -0.99916,
+          -0.99168
+        ],
+        "significant": true
+      }
+    },
+    "laya_plain+platt": {
+      "auc": 0.82513,
+      "tar_at_far_1e-3": 0.001,
+      "tar_ci95": [
+        0.0,
+        0.00267
+      ],
+      "test_far": 0.0006,
+      "cllr": 0.75452,
+      "cllr_ci95": [
+        0.73656,
+        0.77139
+      ],
+      "ece": 0.05136,
+      "ms_per_decision_rtx": 29.35,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.73822,
+        "ci95": [
+          0.71798,
+          0.75857
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.99602,
+        "ci95": [
+          -0.99916,
+          -0.99168
+        ],
+        "significant": true
+      }
+    },
+    "laya_note": {
+      "auc": 0.99082,
+      "tar_at_far_1e-3": 0.9455,
+      "tar_ci95": [
+        0.93249,
+        0.95747
+      ],
+      "test_far": 0.00145,
+      "cllr": 0.2622,
+      "cllr_ci95": [
+        0.24577,
+        0.28066
+      ],
+      "ece": 0.12637,
+      "ms_per_decision_rtx": 26.56,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.24631,
+        "ci95": [
+          0.2277,
+          0.26441
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.05133,
+        "ci95": [
+          -0.06349,
+          -0.04165
+        ],
+        "significant": true
+      }
+    },
+    "laya_note+platt": {
+      "auc": 0.99082,
+      "tar_at_far_1e-3": 0.9455,
+      "tar_ci95": [
+        0.93249,
+        0.95747
+      ],
+      "test_far": 0.00145,
+      "cllr": 0.12627,
+      "cllr_ci95": [
+        0.08763,
+        0.169
+      ],
+      "ece": 0.00674,
+      "ms_per_decision_rtx": 26.56,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.11006,
+        "ci95": [
+          0.07436,
+          0.15094
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.05133,
+        "ci95": [
+          -0.06349,
+          -0.04165
+        ],
+        "significant": true
+      }
+    },
+    "laya_rich": {
+      "auc": 0.77792,
+      "tar_at_far_1e-3": 0.019,
+      "tar_ci95": [
+        0.01123,
+        0.0264
+      ],
+      "test_far": 0.0011,
+      "cllr": 0.86174,
+      "cllr_ci95": [
+        0.83185,
+        0.88973
+      ],
+      "ece": 0.06712,
+      "ms_per_decision_rtx": 28.76,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.846,
+        "ci95": [
+          0.81546,
+          0.87948
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.97808,
+        "ci95": [
+          -0.9859,
+          -0.96976
+        ],
+        "significant": true
+      }
+    },
+    "laya_rich+platt": {
+      "auc": 0.77792,
+      "tar_at_far_1e-3": 0.019,
+      "tar_ci95": [
+        0.01123,
+        0.0264
+      ],
+      "test_far": 0.0011,
+      "cllr": 0.84441,
+      "cllr_ci95": [
+        0.82034,
+        0.8676
+      ],
+      "ece": 0.06256,
+      "ms_per_decision_rtx": 28.76,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.82876,
+        "ci95": [
+          0.80142,
+          0.8567
+        ],
+        "significant": true
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.97808,
+        "ci95": [
+          -0.9859,
+          -0.96976
+        ],
+        "significant": true
+      }
+    }
+  },
+  "laya_latency": {
+    "mac-m4pro": {
+      "mps": {
+        "p50_ms": 37.629,
+        "p95_ms": 38.137,
+        "mean_ms": 37.65,
+        "min_ms": 37.046,
+        "session_p50_ms": [
+          37.557,
+          37.695,
+          37.629
+        ],
+        "load_s": 21.5,
+        "runs": 50,
+        "warmup": 10
+      },
+      "cpu": {
+        "p50_ms": 116.213,
+        "p95_ms": 118.038,
+        "mean_ms": 115.912,
+        "min_ms": 112.093,
+        "session_p50_ms": [
+          115.979,
+          116.213,
+          116.482
+        ],
+        "load_s": 19.7,
+        "runs": 50,
+        "warmup": 10
+      }
+    },
+    "rtx5060ti": {
+      "cuda": {
+        "p50_ms": 17.793,
+        "p95_ms": 18.632,
+        "mean_ms": 17.904,
+        "min_ms": 17.49,
+        "session_p50_ms": [
+          63.628,
+          17.793,
+          17.776
+        ],
+        "load_s": 6.2,
+        "runs": 50,
+        "warmup": 10
+      },
+      "cpu": {
+        "p50_ms": 250.464,
+        "p95_ms": 256.3,
+        "mean_ms": 250.537,
+        "min_ms": 239.172,
+        "session_p50_ms": [
+          250.464,
+          250.395,
+          251.089
+        ],
+        "load_s": 3.5,
+        "runs": 50,
+        "warmup": 10
+      }
+    }
+  },
+  "platt_latency": {
+    "mac-m4pro": {
+      "per_call_us": 0.125,
+      "session_us": [
+        0.126,
+        0.125,
+        0.124
+      ],
+      "calls_per_session": 100000
+    },
+    "rtx5060ti": {
+      "per_call_us": 0.493,
+      "session_us": [
+        0.502,
+        0.493,
+        0.492
+      ],
+      "calls_per_session": 100000
+    }
+  }
+}

@@ -22,6 +22,10 @@ vision = [
   "onnx>=1.17",
   "onnxconverter-common>=1.14",
 ]
+laya = [
+  "laya==0.3.5",
+  "torch>=2.4",
+]
 apple = [
   "coremltools>=8.0",
 ]
