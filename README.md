@@ -153,6 +153,23 @@ official labels; a clearly marked sensitivity run removes these.
   fresh sessions.
 - Fixed-size model exports kept stale output shapes, which changed how Core ML split the model.
 
+## Try it on your webcam
+
+On a Mac with the models in `models/` (see [Reproduce](#reproduce)):
+
+```bash
+make demo                                          # press E to enroll your face, Q to quit
+PYTHONPATH=src python scripts/demo_webcam.py --laya   # same, with Laya making the decision
+```
+
+The window shows LOCKED / UNLOCKED, the calibrated probability, and each stage's time live. It uses
+the balanced pipeline and the unlock rule measured above. Your face template is saved only on your
+machine, in `data/demo/`. **A photo of you will also unlock it**: there is no depth camera.
+
+The first time, macOS asks to let your terminal use the camera (System Settings → Privacy & Security
+→ Camera). Without a camera, `--video clip.mp4 --enroll-frames 5 --headless` runs the same loop on a
+file and prints a summary.
+
 ## Reproduce
 
 Code is edited on the Mac; data, training and CUDA timing run on a GPU machine (`./gpu` wraps the

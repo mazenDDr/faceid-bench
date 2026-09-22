@@ -51,6 +51,7 @@ def test_verify_uses_platt_and_prior():
     assert r["llr"] == pytest.approx(5.0)
     assert r["probability"] == pytest.approx(1 / (1 + np.exp(-5.0)))
     assert set(r["times"]) == {"detect_ms", "align_ms", "embed_ms", "decide_ms", "total_ms"}
+    assert r["face_row"][2] == 200  # the face it used, for drawing
 
 
 def test_no_face_means_no_unlock():
