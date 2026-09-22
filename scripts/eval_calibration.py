@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from faceid_bench.calibrate import CALIBRATORS, boot_metrics, brier, cllr, ece, min_cllr
-from faceid_bench.data import LFW_LABEL_ERRORS, identity_split, lfw_images
+from faceid_bench.data import LFW_LABEL_ERRORS, LFW_NAME_COLLISIONS, identity_split, lfw_images
 from faceid_bench.verify import PairScores, identity_weights, threshold_at_far
 
 CACHE = Path("data/cache/lfw")
@@ -23,7 +23,9 @@ parser.add_argument("--boot", type=int, default=200)
 parser.add_argument("--out-name", default="compare")
 parser.add_argument("--dev-impostors", type=int, default=1_000_000)
 parser.add_argument(
-    "--drop-label-errors", action="store_true", help="sensitivity check: remove LFW_LABEL_ERRORS"
+    "--drop-label-errors",
+    action="store_true",
+    help="sensitivity check: drop mislabelled images and name collisions",
 )
 args = parser.parse_args()
 suffix = "_clean" if args.drop_label_errors else ""
@@ -46,7 +48,9 @@ def pairs_of(s: PairScores, mask):
 
 
 split = identity_split(
-    lfw_images(), drop=set(LFW_LABEL_ERRORS) if args.drop_label_errors else frozenset()
+    lfw_images(),
+    drop=set(LFW_LABEL_ERRORS) if args.drop_label_errors else frozenset(),
+    drop_identities=set(LFW_NAME_COLLISIONS) if args.drop_label_errors else frozenset(),
 )
 result = {"prior": 0.5, "n_boot": args.boot, "models": {}}
 for name in args.models:

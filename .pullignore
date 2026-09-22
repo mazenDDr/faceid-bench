@@ -1,0 +1,5 @@
+# Files under outputs/ that are produced on the Mac: `make pull` must never overwrite them
+# with the GPU machine's copies (which do not have them, so rsync would delete or replace).
+latency_mac-*
+bench_mac-*
+env_mac-*

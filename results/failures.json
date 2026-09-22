@@ -1,0 +1,889 @@
+{
+  "far_target": 1e-05,
+  "threshold_from_dev": 0.33466,
+  "test_pairs": {
+    "genuine": 13183,
+    "impostor": 16183403
+  },
+  "known_data_problems": {
+    "images": {
+      "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg": "shows a different man",
+      "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg": "shows Abdullah Gul",
+      "Gabrielle_Rose/Gabrielle_Rose_0001.jpg": "same photo as Martha_Bowen_0002",
+      "Martha_Bowen/Martha_Bowen_0002.jpg": "same photo as Gabrielle_Rose_0001"
+    },
+    "name_collisions": {
+      "Jim_OBrien": "two different men, both basketball coaches"
+    }
+  },
+  "false_rejects": {
+    "count": 69,
+    "stages": {
+      "data: wrong label": 39,
+      "embed: model": 22,
+      "detect: small face": 3,
+      "align: extreme pose": 2,
+      "image: dark or washed out": 2,
+      "image: blurred": 1
+    },
+    "model_only": 30,
+    "fixed_by_accurate_config": 1,
+    "examples": [
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0014.jpg",
+        "similarity": -0.0593,
+        "similarity_accurate": -0.0628,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 102.23,
+          "det_score": 0.81,
+          "roll_deg": -4.62,
+          "yaw_proxy": 0.08,
+          "eye_distance_px": 45.88,
+          "sharpness": 355.77,
+          "brightness": 123.45
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0004.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "similarity": -0.0176,
+        "similarity_accurate": -0.0242,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 97.65,
+          "det_score": 0.81,
+          "roll_deg": 0.41,
+          "yaw_proxy": 0.15,
+          "eye_distance_px": 41.81,
+          "sharpness": 224.32,
+          "brightness": 130.13
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0013.jpg",
+        "similarity": -0.0163,
+        "similarity_accurate": -0.0054,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 112.25,
+          "det_score": 0.77,
+          "roll_deg": -2.24,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 52.45,
+          "sharpness": 135.32,
+          "brightness": 100.83
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0010.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "similarity": -0.0132,
+        "similarity_accurate": -0.0255,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 100.66,
+          "det_score": 0.76,
+          "roll_deg": -12.06,
+          "yaw_proxy": 0.14,
+          "eye_distance_px": 41.47,
+          "sharpness": 346.09,
+          "brightness": 125.22
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0002.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "similarity": -0.0126,
+        "similarity_accurate": -0.0119,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 99.19,
+          "det_score": 0.78,
+          "roll_deg": -0.98,
+          "yaw_proxy": -0.13,
+          "eye_distance_px": 42.81,
+          "sharpness": 29.01,
+          "brightness": 118.12
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0001.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "similarity": -0.0018,
+        "similarity_accurate": 0.003,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 99.78,
+          "det_score": 0.79,
+          "roll_deg": -1.26,
+          "yaw_proxy": 0.21,
+          "eye_distance_px": 41.24,
+          "sharpness": 72.73,
+          "brightness": 132.23
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        }
+      },
+      {
+        "a": "Jim_OBrien/Jim_OBrien_0001.jpg",
+        "b": "Jim_OBrien/Jim_OBrien_0003.jpg",
+        "similarity": 0.0003,
+        "similarity_accurate": 0.0146,
+        "stage": "embed: model",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 89.99,
+          "det_score": 0.82,
+          "roll_deg": -6.76,
+          "yaw_proxy": 0.05,
+          "eye_distance_px": 39.0,
+          "sharpness": 179.02,
+          "brightness": 90.65
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 95.65,
+          "det_score": 0.8,
+          "roll_deg": 0.18,
+          "yaw_proxy": 0.06,
+          "eye_distance_px": 39.61,
+          "sharpness": 116.06,
+          "brightness": 113.63
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0017.jpg",
+        "similarity": 0.0084,
+        "similarity_accurate": 0.011,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 90.34,
+          "det_score": 0.84,
+          "roll_deg": 1.17,
+          "yaw_proxy": -0.12,
+          "eye_distance_px": 40.39,
+          "sharpness": 417.2,
+          "brightness": 132.65
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0016.jpg",
+        "similarity": 0.0107,
+        "similarity_accurate": 0.0111,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 92.64,
+          "det_score": 0.8,
+          "roll_deg": -10.06,
+          "yaw_proxy": -0.0,
+          "eye_distance_px": 39.89,
+          "sharpness": 173.81,
+          "brightness": 158.87
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0020.jpg",
+        "similarity": 0.013,
+        "similarity_accurate": -0.0048,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 100.55,
+          "det_score": 0.8,
+          "roll_deg": 10.97,
+          "yaw_proxy": 0.04,
+          "eye_distance_px": 44.13,
+          "sharpness": 400.09,
+          "brightness": 125.44
+        }
+      },
+      {
+        "a": "Cristina_Fernandez/Cristina_Fernandez_0001.jpg",
+        "b": "Cristina_Fernandez/Cristina_Fernandez_0002.jpg",
+        "similarity": 0.0158,
+        "similarity_accurate": 0.005,
+        "stage": "embed: model",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 113.49,
+          "det_score": 0.78,
+          "roll_deg": 3.94,
+          "yaw_proxy": 0.11,
+          "eye_distance_px": 50.33,
+          "sharpness": 136.51,
+          "brightness": 140.52
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 84.61,
+          "det_score": 0.89,
+          "roll_deg": -0.78,
+          "yaw_proxy": 0.13,
+          "eye_distance_px": 39.48,
+          "sharpness": 167.26,
+          "brightness": 86.35
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0011.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "similarity": 0.0204,
+        "similarity_accurate": 0.0181,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 97.23,
+          "det_score": 0.77,
+          "roll_deg": 3.27,
+          "yaw_proxy": -0.31,
+          "eye_distance_px": 36.33,
+          "sharpness": 322.53,
+          "brightness": 121.34
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        }
+      },
+      {
+        "a": "Mahmoud_Abbas/Mahmoud_Abbas_0012.jpg",
+        "b": "Mahmoud_Abbas/Mahmoud_Abbas_0018.jpg",
+        "similarity": 0.021,
+        "similarity_accurate": 0.0302,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.61,
+          "det_score": 0.79,
+          "roll_deg": -3.87,
+          "yaw_proxy": 0.01,
+          "eye_distance_px": 42.89,
+          "sharpness": 296.49,
+          "brightness": 129.93
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 99.16,
+          "det_score": 0.77,
+          "roll_deg": -0.56,
+          "yaw_proxy": -0.06,
+          "eye_distance_px": 44.52,
+          "sharpness": 229.52,
+          "brightness": 120.52
+        }
+      },
+      {
+        "a": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0007.jpg",
+        "similarity": 0.0216,
+        "similarity_accurate": 0.0364,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 87.3,
+          "det_score": 0.74,
+          "roll_deg": 3.63,
+          "yaw_proxy": -0.4,
+          "eye_distance_px": 33.23,
+          "sharpness": 136.64,
+          "brightness": 109.81
+        }
+      },
+      {
+        "a": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0006.jpg",
+        "similarity": 0.0217,
+        "similarity_accurate": 0.0308,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 88.22,
+          "det_score": 0.84,
+          "roll_deg": -9.83,
+          "yaw_proxy": -0.3,
+          "eye_distance_px": 34.82,
+          "sharpness": 173.54,
+          "brightness": 106.06
+        }
+      }
+    ]
+  },
+  "false_accepts": {
+    "count": 86,
+    "stages": {
+      "embed: model": 41,
+      "data: wrong label": 20,
+      "image: blurred": 9,
+      "align: extreme pose": 7,
+      "image: dark or washed out": 5,
+      "detect: small face": 4
+    },
+    "model_only": 66,
+    "fixed_by_accurate_config": 10,
+    "examples": [
+      {
+        "a": "Gabrielle_Rose/Gabrielle_Rose_0001.jpg",
+        "b": "Martha_Bowen/Martha_Bowen_0002.jpg",
+        "similarity": 0.962,
+        "similarity_accurate": 0.9594,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 92.41,
+          "det_score": 0.85,
+          "roll_deg": 0.41,
+          "yaw_proxy": 0.05,
+          "eye_distance_px": 41.02,
+          "sharpness": 394.41,
+          "brightness": 144.15
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 88.61,
+          "det_score": 0.84,
+          "roll_deg": 0.87,
+          "yaw_proxy": 0.05,
+          "eye_distance_px": 38.51,
+          "sharpness": 263.28,
+          "brightness": 143.77
+        }
+      },
+      {
+        "a": "Shinya_Taniguchi/Shinya_Taniguchi_0001.jpg",
+        "b": "Takahiro_Mori/Takahiro_Mori_0001.jpg",
+        "similarity": 0.8594,
+        "similarity_accurate": 0.8609,
+        "stage": "embed: model",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 96.81,
+          "det_score": 0.85,
+          "roll_deg": 2.02,
+          "yaw_proxy": 0.13,
+          "eye_distance_px": 40.43,
+          "sharpness": 126.54,
+          "brightness": 142.17
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 87.63,
+          "det_score": 0.89,
+          "roll_deg": 4.49,
+          "yaw_proxy": 0.06,
+          "eye_distance_px": 38.06,
+          "sharpness": 121.8,
+          "brightness": 132.42
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0012.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.8129,
+        "similarity_accurate": 0.8134,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.87,
+          "det_score": 0.8,
+          "roll_deg": 7.61,
+          "yaw_proxy": -0.13,
+          "eye_distance_px": 41.52,
+          "sharpness": 283.09,
+          "brightness": 100.78
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0015.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.79,
+        "similarity_accurate": 0.8025,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 79.75,
+          "det_score": 0.83,
+          "roll_deg": 2.48,
+          "yaw_proxy": -0.35,
+          "eye_distance_px": 31.84,
+          "sharpness": 38.22,
+          "brightness": 115.58
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0013.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7768,
+        "similarity_accurate": 0.7781,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 94.38,
+          "det_score": 0.85,
+          "roll_deg": 0.61,
+          "yaw_proxy": -0.12,
+          "eye_distance_px": 40.85,
+          "sharpness": 479.85,
+          "brightness": 127.42
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0016.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.773,
+        "similarity_accurate": 0.7834,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 79.34,
+          "det_score": 0.72,
+          "roll_deg": -12.59,
+          "yaw_proxy": -0.88,
+          "eye_distance_px": 20.65,
+          "sharpness": 179.71,
+          "brightness": 115.57
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0019.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7699,
+        "similarity_accurate": 0.7637,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 97.66,
+          "det_score": 0.81,
+          "roll_deg": 10.42,
+          "yaw_proxy": -0.22,
+          "eye_distance_px": 41.2,
+          "sharpness": 195.9,
+          "brightness": 142.6
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0017.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7558,
+        "similarity_accurate": 0.7438,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 86.7,
+          "det_score": 0.81,
+          "roll_deg": 9.04,
+          "yaw_proxy": -0.18,
+          "eye_distance_px": 38.04,
+          "sharpness": 235.97,
+          "brightness": 102.66
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Carolina_Moraes/Carolina_Moraes_0002.jpg",
+        "b": "Isabela_Moraes/Isabela_Moraes_0001.jpg",
+        "similarity": 0.7549,
+        "similarity_accurate": 0.7524,
+        "stage": "embed: model",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 91.93,
+          "det_score": 0.85,
+          "roll_deg": 4.33,
+          "yaw_proxy": 0.14,
+          "eye_distance_px": 41.11,
+          "sharpness": 177.73,
+          "brightness": 145.64
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 94.7,
+          "det_score": 0.82,
+          "roll_deg": -12.24,
+          "yaw_proxy": -0.13,
+          "eye_distance_px": 41.99,
+          "sharpness": 202.31,
+          "brightness": 144.63
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0001.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7433,
+        "similarity_accurate": 0.7331,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 92.0,
+          "det_score": 0.85,
+          "roll_deg": 9.16,
+          "yaw_proxy": -0.16,
+          "eye_distance_px": 38.97,
+          "sharpness": 140.03,
+          "brightness": 159.08
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0011.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7393,
+        "similarity_accurate": 0.7401,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 97.89,
+          "det_score": 0.78,
+          "roll_deg": 1.7,
+          "yaw_proxy": -0.13,
+          "eye_distance_px": 42.42,
+          "sharpness": 266.96,
+          "brightness": 111.46
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Anja_Paerson/Anja_Paerson_0001.jpg",
+        "b": "Janica_Kostelic/Janica_Kostelic_0002.jpg",
+        "similarity": 0.7361,
+        "similarity_accurate": 0.7409,
+        "stage": "embed: model",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 102.59,
+          "det_score": 0.8,
+          "roll_deg": 14.4,
+          "yaw_proxy": 0.08,
+          "eye_distance_px": 45.97,
+          "sharpness": 385.46,
+          "brightness": 147.11
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 96.78,
+          "det_score": 0.79,
+          "roll_deg": -4.84,
+          "yaw_proxy": 0.03,
+          "eye_distance_px": 42.36,
+          "sharpness": 761.27,
+          "brightness": 150.3
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0009.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7276,
+        "similarity_accurate": 0.7277,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 91.57,
+          "det_score": 0.81,
+          "roll_deg": 2.79,
+          "yaw_proxy": -0.08,
+          "eye_distance_px": 42.36,
+          "sharpness": 188.99,
+          "brightness": 114.33
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0007.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.723,
+        "similarity_accurate": 0.7188,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 97.38,
+          "det_score": 0.82,
+          "roll_deg": 15.17,
+          "yaw_proxy": -0.14,
+          "eye_distance_px": 41.6,
+          "sharpness": 211.43,
+          "brightness": 119.73
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      },
+      {
+        "a": "Abdullah_Gul/Abdullah_Gul_0008.jpg",
+        "b": "Recep_Tayyip_Erdogan/Recep_Tayyip_Erdogan_0004.jpg",
+        "similarity": 0.7219,
+        "similarity_accurate": 0.7222,
+        "stage": "data: wrong label",
+        "fixed_by_accurate": false,
+        "features_a": {
+          "found": true,
+          "face_width_px": 93.26,
+          "det_score": 0.81,
+          "roll_deg": -4.55,
+          "yaw_proxy": 0.09,
+          "eye_distance_px": 42.9,
+          "sharpness": 195.17,
+          "brightness": 118.18
+        },
+        "features_b": {
+          "found": true,
+          "face_width_px": 101.46,
+          "det_score": 0.74,
+          "roll_deg": -19.39,
+          "yaw_proxy": -0.68,
+          "eye_distance_px": 30.69,
+          "sharpness": 248.6,
+          "brightness": 109.44
+        }
+      }
+    ]
+  }
+}

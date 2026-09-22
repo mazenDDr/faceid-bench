@@ -125,6 +125,12 @@ LFW_LABEL_ERRORS = {
 }
 
 
+# Two different men share this name in LFW (checked by eye while tracing failures): every
+# "same person" pair across them is really a pair of different people. A name collision, not a
+# mislabelled photo, so it drops the whole identity rather than one image.
+LFW_NAME_COLLISIONS = {"Jim_OBrien": "two different men, both basketball coaches"}
+
+
 def split_of(identity: str, test_share: float = 0.5, salt: str = "faceid-bench") -> str:
     """'dev' or 'test' from a hash of the identity name: stable, no randomness to record."""
     digest = hashlib.sha256(f"{salt}:{identity}".encode()).digest()
@@ -132,7 +138,10 @@ def split_of(identity: str, test_share: float = 0.5, salt: str = "faceid-bench")
 
 
 def identity_split(
-    images: dict[str, list[str]], max_per_identity: int = 20, drop: set[str] = frozenset()
+    images: dict[str, list[str]],
+    max_per_identity: int = 20,
+    drop: set[str] = frozenset(),
+    drop_identities: set[str] = frozenset(),
 ) -> dict[str, dict[str, list[str]]]:
     """Split identities into dev/test and cap images per identity.
 
@@ -141,6 +150,8 @@ def identity_split(
     """
     split: dict[str, dict[str, list[str]]] = {"dev": {}, "test": {}}
     for identity, paths in images.items():
+        if identity in drop_identities:
+            continue
         kept = [p for p in paths[:max_per_identity] if p not in drop]
         if kept:
             split[split_of(identity)][identity] = kept
