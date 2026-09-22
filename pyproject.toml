@@ -19,6 +19,8 @@ dependencies = [
 vision = [
   "opencv-python>=4.10",
   "onnxruntime>=1.20",
+  "onnx>=1.17",
+  "onnxconverter-common>=1.14",
 ]
 apple = [
   "coremltools>=8.0",
