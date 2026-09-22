@@ -15,6 +15,11 @@ SOURCES = {
     "scrfd_500m_kps": "models/buffalo_s/det_500m.onnx",
     "scrfd_10g_kps": "models/buffalo_l/det_10g.onnx",
 }
+RECOGNIZERS = {
+    "mbf_w600k": "models/buffalo_s/w600k_mbf.onnx",
+    "r50_w600k": "models/buffalo_l/w600k_r50.onnx",
+    "sface": "models/sface_2021dec.onnx",
+}
 out_dir = Path("models/fixed")
 out_dir.mkdir(parents=True, exist_ok=True)
 for name, source in SOURCES.items():
@@ -26,3 +31,17 @@ for name, source in SOURCES.items():
         fp16 = float16.convert_float_to_float16(model, keep_io_types=True)
         onnx.save(fp16, out_dir / f"{name}_{size}_fp16.onnx")
         print(f"{name}_{size}: fp32 + fp16")
+
+# Recognizers: batch 1 at 112x112 for timing; an fp16 copy keeping the dynamic batch for accuracy.
+for name, source in RECOGNIZERS.items():
+    model = onnx.load(source)
+    make_input_shape_fixed(model.graph, model.graph.input[0].name, [1, 3, 112, 112])
+    model = onnx.shape_inference.infer_shapes(model)
+    onnx.save(model, out_dir / f"{name}_112.onnx")
+    onnx.save(
+        float16.convert_float_to_float16(model, keep_io_types=True),
+        out_dir / f"{name}_112_fp16.onnx",
+    )
+    dynamic = float16.convert_float_to_float16(onnx.load(source), keep_io_types=True)
+    onnx.save(dynamic, out_dir / f"{name}_fp16.onnx")
+    print(f"{name}_112: fp32 + fp16, plus dynamic-batch fp16")
