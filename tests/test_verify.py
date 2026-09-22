@@ -61,3 +61,14 @@ def test_bootstrap_with_unit_weights_equals_point_rates(t):
     point = s.rates(t)
     assert tar == pytest.approx([point["tar"]] * 2)
     assert far == pytest.approx([point["far"]] * 2)
+
+
+def test_auc_counts_pairs_and_ties():
+    from faceid_bench.verify import auc
+
+    assert auc(np.array([3.0, 4.0]), np.array([1.0, 2.0])) == 1.0
+    assert auc(np.array([1.0]), np.array([2.0])) == 0.0
+    assert auc(np.array([1.0, 1.0]), np.array([1.0, 1.0])) == 0.5  # all ties: no information
+    g, i = np.array([2.0, 0.5]), np.array([1.0, 0.5])
+    brute = np.mean([(a > b) + 0.5 * (a == b) for a in g for b in i])
+    assert auc(g, i) == pytest.approx(brute)

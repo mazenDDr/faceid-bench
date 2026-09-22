@@ -87,3 +87,12 @@ def bootstrap_rates(counts: dict[str, np.ndarray], sizes: np.ndarray, weights: n
 def identity_weights(n_ids: int, n_boot: int = 1000, seed: int = 0) -> np.ndarray:
     rng = np.random.default_rng(seed)
     return rng.multinomial(n_ids, np.full(n_ids, 1 / n_ids), size=n_boot).astype(np.float64)
+
+
+def auc(genuine: np.ndarray, impostor: np.ndarray) -> float:
+    """P(a random genuine pair scores above a random impostor pair); ties count half."""
+    both = np.concatenate([genuine, impostor])
+    _, inverse, counts = np.unique(both, return_inverse=True, return_counts=True)
+    ranks = (np.cumsum(counts) - (counts - 1) / 2)[inverse]  # average rank within ties
+    n_g, n_i = len(genuine), len(impostor)
+    return float((ranks[:n_g].sum() - n_g * (n_g + 1) / 2) / (n_g * n_i))

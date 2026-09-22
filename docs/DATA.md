@@ -11,6 +11,7 @@ item from its source into `data/` (git-ignored); `data/SHA256SUMS` records what 
 | YuNet (`2023mar`, `2026may` ONNX) | Detector | OpenCV Zoo | MIT |
 | MobileFaceNet / ResNet-50 (`w600k_mbf`, `w600k_r50`, WebFace600K) | Face embedding | InsightFace v0.7 release (`buffalo_s` / `buffalo_l`) | Models: non-commercial research only |
 | SFace (`face_recognition_sface_2021dec.onnx`) | Face embedding | OpenCV Zoo | Apache 2.0 |
+| Laya (`convaiinnovations/laya`, ModernBERT-large, 421M) | Text/JSON decision engine, tested as the "same person?" step | Hugging Face, package `laya` 0.3.5 | Apache 2.0 |
 | SCRFD 500M / 10G with keypoints (`det_500m`, `det_10g` in `buffalo_s` / `buffalo_l`) | Detector | InsightFace v0.7 release | Models: non-commercial research only (InsightFace code is MIT) |
 
 ## Splits
