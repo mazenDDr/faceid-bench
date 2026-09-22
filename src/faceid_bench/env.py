@@ -8,6 +8,8 @@ import statistics
 import tempfile
 import time
 
+from faceid_bench.latency import machine_label
+
 LIBRARIES = ("numpy", "cv2", "onnxruntime", "torch", "torchvision", "coremltools")
 
 
@@ -107,7 +109,7 @@ def coreml_timing(size: int = 640, runs: int = 100) -> dict[str, object]:
 
 def collect() -> dict[str, object]:
     return {
-        "host": platform.node(),
+        "machine": machine_label(),
         "system": f"{platform.system()} {platform.machine()}",
         "python": platform.python_version(),
         "libraries": library_versions(),
