@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 
-from faceid_bench.data import DATA, identity_split, lfw_images, read_lfw_pairs
+from faceid_bench.data import DATA, LFW_LABEL_ERRORS, identity_split, lfw_images, read_lfw_pairs
 from faceid_bench.verify import (
     PairScores,
     bootstrap_rates,
@@ -28,7 +28,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("models", nargs="+")
 parser.add_argument("--baseline", default="mbf_w600k")
 parser.add_argument("--boot", type=int, default=1000)
+parser.add_argument(
+    "--drop-label-errors", action="store_true", help="sensitivity check: remove LFW_LABEL_ERRORS"
+)
 args = parser.parse_args()
+suffix = "_clean" if args.drop_label_errors else ""
 
 
 def interval(values):
@@ -36,7 +40,9 @@ def interval(values):
 
 
 pairs = read_lfw_pairs(DATA / "lfw" / "pairs.txt")
-split = identity_split(lfw_images())
+split = identity_split(
+    lfw_images(), drop=set(LFW_LABEL_ERRORS) if args.drop_label_errors else frozenset()
+)
 result = {"fars": list(FARS), "n_boot": args.boot, "baseline": args.baseline, "models": {}}
 boots, weights = {}, None
 for name in dict.fromkeys([args.baseline, *args.models]):
@@ -94,7 +100,7 @@ for name, row in result["models"].items():
             "significant": bool(lo > 0 or hi < 0),
         }
 
-out = Path("outputs/verification/compare.json")
+out = Path(f"outputs/verification/compare{suffix}.json")
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(result, indent=2) + "\n")
 print(f"saved {out}")
