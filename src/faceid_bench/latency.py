@@ -107,8 +107,8 @@ def measure(
     return times
 
 
-def onnx_session(path: str, backend: str, unit: str = "all"):
-    """onnxruntime session on one provider, CPU fallback allowed but reported via `active`."""
+def providers_for(backend: str, unit: str = "all") -> list:
+    """onnxruntime provider list for one backend; CPU fallback is allowed except for 'cpu'."""
     import onnxruntime as ort
 
     if backend in ("cuda", "tensorrt") and hasattr(ort, "preload_dlls"):
@@ -118,14 +118,19 @@ def onnx_session(path: str, backend: str, unit: str = "all"):
     provider = ORT_PROVIDERS[backend]
     if backend == "coreml":
         options = {"ModelFormat": "MLProgram", "MLComputeUnits": COREML_UNITS[unit][1]}
-        providers = [(provider, options), "CPUExecutionProvider"]
-    elif backend == "cpu":
-        providers = [provider]
-    else:
-        providers = [provider, "CPUExecutionProvider"]
+        return [(provider, options), "CPUExecutionProvider"]
+    if backend == "cpu":
+        return [provider]
+    return [provider, "CPUExecutionProvider"]
+
+
+def onnx_session(path: str, backend: str, unit: str = "all"):
+    """onnxruntime session on one provider, CPU fallback allowed but reported via `active`."""
+    import onnxruntime as ort
+
     session_options = ort.SessionOptions()
     session_options.log_severity_level = 3
-    return ort.InferenceSession(path, session_options, providers=providers)
+    return ort.InferenceSession(path, session_options, providers=providers_for(backend, unit))
 
 
 def time_onnx(

@@ -28,6 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("models", nargs="+")
 parser.add_argument("--baseline", default="mbf_w600k")
 parser.add_argument("--boot", type=int, default=1000)
+parser.add_argument("--out-name", default="compare")
 parser.add_argument(
     "--drop-label-errors", action="store_true", help="sensitivity check: remove LFW_LABEL_ERRORS"
 )
@@ -100,7 +101,7 @@ for name, row in result["models"].items():
             "significant": bool(lo > 0 or hi < 0),
         }
 
-out = Path(f"outputs/verification/compare{suffix}.json")
+out = Path(f"outputs/verification/{args.out_name}{suffix}.json")
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(result, indent=2) + "\n")
 print(f"saved {out}")
