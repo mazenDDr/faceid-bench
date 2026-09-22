@@ -1,0 +1,17 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Datasets, weights and raw run outputs live on gpu-box or are pulled deliberately.
+/data/
+/outputs/
+/models/
+/experiments/results/
+
+# Private working notes used by the measured-build workflow.
+AGENTS.md
+docs/TASKS.md
+docs/HANDOFF_LOG.md
