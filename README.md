@@ -23,6 +23,8 @@ Every model choice measured, with intervals. And a fair test of Laya.
   <a href="#what-goes-wrong"><b>What goes wrong</b></a>
   &nbsp;·&nbsp;
   <a href="#reproduce"><b>Reproduce</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://mazenddr.github.io/faceid-bench/"><b>Interactive page</b></a>
 </p>
 
 ---
@@ -56,7 +58,8 @@ iPhone.
 **Balanced** is the pick: as accurate as the 640 px version (the difference is not significant) in
 under half the time.
 
-**Pick your own unlock threshold:** `site/index.html` (built by `make readme`) shows every test pair's
+**[Pick your own unlock threshold](https://mazenddr.github.io/faceid-bench/)** — an interactive page
+(`site/index.html`, built by `make readme`) that shows every test pair's
 score and lets you move the unlock line and the prior, with the true-accept rate, strangers per
 million and the calibrated probability updating live.
 
