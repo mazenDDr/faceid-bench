@@ -1,6 +1,6 @@
 <!-- BEGIN GENERATED HERO -->
 <p align="center">
-  <img src="docs/assets/hero.svg" width="100%" alt="One unlock attempt on a Mac (Apple M4 Pro): finding the face, aligning it, embedding it and deciding takes 4.75 ms. With Laya making the decision it takes 35.5 ms, of which Laya is 30.0 ms.">
+  <img src="docs/assets/how-it-works.svg" width="100%" alt="Animation of one unlock attempt on real LFW data. The face is found, its five landmarks move onto the alignment template, the cosine similarity is built from 32 contributions, and the Platt curve turns it into a probability. The enrolled person scores 0.631 and unlocks; a stranger scores -0.080 and stays locked. The unlock line is 0.335.">
 </p>
 <!-- END GENERATED HERO -->
 
@@ -23,6 +23,8 @@ Every model choice measured, with intervals. And a fair test of Laya.
   <a href="#what-goes-wrong"><b>What goes wrong</b></a>
   &nbsp;·&nbsp;
   <a href="#reproduce"><b>Reproduce</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://mazenddr.github.io/faceid-bench/"><b>Interactive page</b></a>
 </p>
 
 ---
@@ -56,7 +58,8 @@ iPhone.
 **Balanced** is the pick: as accurate as the 640 px version (the difference is not significant) in
 under half the time.
 
-**Pick your own unlock threshold:** `site/index.html` (built by `make readme`) shows every test pair's
+**[Pick your own unlock threshold](https://mazenddr.github.io/faceid-bench/)** — an interactive page
+(`site/index.html`, built by `make readme`) that shows every test pair's
 score and lets you move the unlock line and the prior, with the true-accept rate, strangers per
 million and the calibrated probability updating live.
 
@@ -65,6 +68,12 @@ million and the calibrated probability updating live.
 Laya reads **text or JSON, not pixels**, so it cannot find a face in an image. It can do the last
 step: read the pipeline's numbers and answer *"same person?"* with a probability. That step was
 measured head-to-head against Platt scaling (two numbers fit on dev people), on the same pairs.
+
+<!-- BEGIN GENERATED TIMELINE -->
+<p align="center">
+  <img src="docs/assets/hero.svg" width="100%" alt="One unlock attempt on a Mac (Apple M4 Pro): finding the face, aligning it, embedding it and deciding takes 4.75 ms. With Laya making the decision it takes 35.5 ms, of which Laya is 30.0 ms.">
+</p>
+<!-- END GENERATED TIMELINE -->
 
 <!-- BEGIN GENERATED LAYA -->
 | Decision step | AUC | TAR @ FAR 1e-3 | Cllr (lower is better) | vs Platt, paired | Mac time per decision |
