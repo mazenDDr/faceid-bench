@@ -22,6 +22,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--test", type=int, nargs=2, default=[2000, 20000], help="genuine impostor")
 parser.add_argument("--dev", type=int, nargs=2, default=[1000, 10000], help="genuine impostor")
 parser.add_argument("--boot", type=int, default=200)
+parser.add_argument(
+    "--model-id", default="convaiinnovations/laya", help="HF id or local checkpoint"
+)
+parser.add_argument("--variants", nargs="+", default=list(VARIANTS))
+parser.add_argument("--out-name", default="compare")
 args = parser.parse_args()
 rng = np.random.default_rng(0)
 
@@ -48,7 +53,7 @@ def sample(people, n_gen, n_imp):
 
 
 dev, test = sample(split["dev"], *args.dev), sample(split["test"], *args.test)
-judge = LayaJudge()
+judge = LayaJudge(args.model_id)
 
 
 def laya_llr(pairs, variant):
@@ -76,7 +81,7 @@ methods = {
         "ms_per_decision": None,
     }
 }
-for v in VARIANTS:
+for v in args.variants:
     dg, _ = laya_llr(dev["gen"], v)
     di, _ = laya_llr(dev["imp"], v)
     tg, ms = laya_llr(test["gen"], v)
@@ -95,7 +100,13 @@ for v in VARIANTS:
 
 weights = identity_weights(test["n_ids"], args.boot)
 id_gen, id_a, id_b = test["gen"][3], test["imp"][3], test["imp"][4]
-result = {"test_pairs": args.test, "dev_pairs": args.dev, "far": 1e-3, "methods": {}}
+result = {
+    "model": args.model_id,
+    "test_pairs": args.test,
+    "dev_pairs": args.dev,
+    "far": 1e-3,
+    "methods": {},
+}
 boots = {}
 for name, m in methods.items():
     (dg, di), (tg, ti) = m["dev"], m["test"]
@@ -130,7 +141,7 @@ for name in methods:
             "ci95": [round(float(lo), 5), round(float(hi), 5)],
             "significant": bool(lo > 0 or hi < 0),
         }
-out = Path("outputs/laya/compare.json")
+out = Path(f"outputs/laya/{args.out_name}.json")
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(result, indent=2) + "\n")
 print(

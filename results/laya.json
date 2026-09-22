@@ -216,7 +216,99 @@
         ],
         "significant": true
       }
+    },
+    "laya_note_finetuned": {
+      "auc": 0.99865,
+      "tar_at_far_1e-3": 0.9965,
+      "tar_ci95": [
+        0.9916,
+        0.99953
+      ],
+      "test_far": 0.0004,
+      "cllr": 0.01833,
+      "cllr_ci95": [
+        0.00619,
+        0.0382
+      ],
+      "ece": 0.00075,
+      "ms_per_decision_rtx": 26.15,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.00304,
+        "ci95": [
+          -0.00214,
+          0.00763
+        ],
+        "significant": false
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.0005,
+        "ci95": [
+          -0.00183,
+          0.0
+        ],
+        "significant": false
+      }
+    },
+    "laya_note+platt_finetuned": {
+      "auc": 0.99865,
+      "tar_at_far_1e-3": 0.9965,
+      "tar_ci95": [
+        0.9916,
+        0.99953
+      ],
+      "test_far": 0.0004,
+      "cllr": 0.01801,
+      "cllr_ci95": [
+        0.00718,
+        0.03574
+      ],
+      "ece": 0.00133,
+      "ms_per_decision_rtx": 26.15,
+      "cllr_minus_platt_cosine": {
+        "mean": 0.00272,
+        "ci95": [
+          -0.00211,
+          0.00721
+        ],
+        "significant": false
+      },
+      "tar_minus_platt_cosine": {
+        "mean": -0.0005,
+        "ci95": [
+          -0.00183,
+          0.0
+        ],
+        "significant": false
+      }
     }
+  },
+  "finetuned_model": "data/cache/laya_ft",
+  "finetune": {
+    "items": 8000,
+    "epochs": [
+      {
+        "epoch": 1,
+        "avg_loss": 0.07988356443530938,
+        "seconds": 162
+      },
+      {
+        "epoch": 2,
+        "avg_loss": 0.05490075673608862,
+        "seconds": 322
+      },
+      {
+        "epoch": 3,
+        "avg_loss": 0.034155623223399746,
+        "seconds": 484
+      },
+      {
+        "epoch": 4,
+        "avg_loss": 0.03340650885428477,
+        "seconds": 645
+      }
+    ],
+    "noul_temperature": 3.2415404319763184,
+    "variant": "note"
   },
   "laya_latency": {
     "mac-m4pro": {

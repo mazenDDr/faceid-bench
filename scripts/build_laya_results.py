@@ -10,6 +10,14 @@ compare = json.loads(Path("outputs/laya/compare.json").read_text())
 files = [json.loads(f.read_text()) for f in sorted(Path("outputs/laya").glob("latency_*.json"))]
 latency = {f["machine"]: f["devices"] for f in files}
 platt_latency = {f["machine"]: f["platt_cosine"] for f in files if "platt_cosine" in f}
+finetuned_path = Path("outputs/laya/compare_finetuned.json")
+if finetuned_path.exists():
+    finetuned = json.loads(finetuned_path.read_text())
+    for name, m in finetuned["methods"].items():
+        if name != "platt_cosine":  # same Platt baseline, already in the table
+            compare["methods"][f"{name}_finetuned"] = m
+    compare["finetuned_model"] = finetuned["model"]
+    compare["finetune"] = json.loads(Path("outputs/laya/finetune_summary.json").read_text())
 out = {**compare, "laya_latency": latency, "platt_latency": platt_latency}
 Path("results/laya.json").write_text(json.dumps(out, indent=2) + "\n")
 
